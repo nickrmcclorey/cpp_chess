@@ -1,0 +1,1 @@
+g++ main.cpp chessboard.cpp chess_piece.cpp
