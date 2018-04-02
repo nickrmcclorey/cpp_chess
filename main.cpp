@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
-#include "chess_piece.h"
-#include "chessboard.h"
+#include "ChessPiece.h"
+#include "Chessboard.h"
 
 using namespace std;
 

@@ -1,1 +1,2 @@
-g++ main.cpp chessboard.cpp chess_piece.cpp
+cls
+g++ main.cpp Chessboard.cpp ChessPiece.cpp
