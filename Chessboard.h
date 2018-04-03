@@ -26,6 +26,7 @@ public:
 
 	// functions to check to see if pieces are allowed to move
 	bool isAllowedToMove(int destination_x, int destination_y); // checks to see if a piece is allowed to move. could call other functions for specific pieces
+	// each of the following functios would be called by the above function once the type of piece is known
 	bool canMoveKing(int, int);
 	bool canMoveQueen(int, int);
 	bool canMoveRook(int, int);
@@ -38,6 +39,11 @@ public:
 	// utility / mutators
 	void move(int, int); // used to move a piece
 	ChessPiece& at(int x, int y); // could use to index board
+	void displayBoard(); // used to display board for debugging
+
+	// functions we'd need to do a save, load game feature
+	void importGame(string file_to_import);
+	void saveGame(string fileName);
 
 	// we'll need to an operator overload for the = sign as there are pointers in the class.
 
