@@ -1,0 +1,19 @@
+
+
+{
+
+   "pieces": [
+    {
+      "team":"white",
+      "type":"bishop",
+      "xPos":4,
+      "yPos":8
+    } , {
+      "team":"black",
+      "type":"king",
+      "xPos":6,
+      "yPos":2
+    }
+  ]
+
+}

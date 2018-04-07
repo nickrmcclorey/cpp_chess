@@ -25,21 +25,21 @@ public:
 	Chessboard(vector<ChessPiece> gameboard); //could be used to create a gameboard with pieces in a certain spot.
 
 	// functions to check to see if pieces are allowed to move
-	bool isAllowedToMove(int destination_x, int destination_y); // checks to see if a piece is allowed to move. could call other functions for specific pieces
+	bool isAllowedToMove(int destination_x, int destination_y) const; // checks to see if a piece is allowed to move. could call other functions for specific pieces
 	// each of the following functios would be called by the above function once the type of piece is known
-	bool canMoveKing(int, int);
-	bool canMoveQueen(int, int);
-	bool canMoveRook(int, int);
-	bool canMoveBishop(int, int);
-	bool canMoveKnight(int, int);
-	bool canMovePawn(int, int);
+	bool canMoveKing(int, int) const;
+	bool canMoveQueen(int, int) const;
+	bool canMoveRook(int, int) const;
+	bool canMoveBishop(int, int) const;
+	bool canMoveKnight(int, int) const;
+	bool canMovePawn(int, int) const;
 
-	bool checkmate(); // check for checkmate
+	bool checkmate() const; // check for checkmate
 
 	// utility / mutators
 	void move(int, int); // used to move a piece
 	ChessPiece& at(int x, int y); // could use to index board
-	void displayBoard(); // used to display board for debugging
+	void displayBoard() const; // used to display board for debugging
 
 	// functions we'd need to do a save, load game feature
 	void importGame(string file_to_import);
