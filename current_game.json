@@ -6,14 +6,15 @@
     {
       "team":"white",
       "type":"bishop",
-      "xPos":4,
-      "yPos":8
+      "xPos":3,
+      "yPos":6
     } , {
       "team":"black",
       "type":"king",
       "xPos":6,
       "yPos":2
     }
-  ]
+  ],
+  "turn":"white"
 
 }

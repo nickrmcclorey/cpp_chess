@@ -24,6 +24,7 @@ public:
 	void setX(int);
 	void setY(int);
 	void setXY(int, int); // set both the x and the y at the same time
+	string JSON_text(int yPos, int xPos) const;
 
 };
 
