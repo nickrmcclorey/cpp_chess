@@ -2,6 +2,7 @@
 #include "ChessPiece.h"
 #include "Chessboard.h"
 #include <cstdlib>
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -66,7 +67,27 @@ void Chessboard::newGame() {
     
 }
 
+ChessPiece& Chessboard::at(int x, int y) {
+	if ((x > 7) || (x < 0) || (y > 7) || (y < 0))
+		throw logic_error("Not valid Index");
+	else
+		return board[x][y];
+}
 
+vector<ChessPiece> Chessboard::allPieces() const {
+	vector<ChessPiece> toReturn;
+	for (int k = 0; k < 6; k++) {
+
+	}
+
+	return toReturn;
+}
+
+void Chessboard::makeJSONfile(string path) const {
+	
+	
+	
+}
 
 
 

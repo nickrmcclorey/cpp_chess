@@ -40,6 +40,7 @@ public:
 	ChessPiece& at(int x, int y); // could use to index board
 	void displayBoard() const; // used to display board for debugging
 	void makeJSONfile(string) const;
+	vector<ChessPiece> allPieces() const;
 
 	// functions we'd need to do a save, load game feature
 	void importGame(string file_to_import);

@@ -15,8 +15,8 @@ private:
 
 public:
 	// getters
-	string team();
-	string type();
+	string team() const;
+	string type() const;
 
 	// setters
 	void setTeam(string);

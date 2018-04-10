@@ -17,6 +17,14 @@ ChessPiece::ChessPiece(string team_its_on, string type) {
 	piece_type = type;
 }
 
+string ChessPiece::team() const{
+	return this->team_on;
+}
+
+string ChessPiece::type() const {
+	return this->piece_type;
+}
+
 void ChessPiece::setTeam(string teamToSet) {
 	this->team_on = teamToSet;
 }
