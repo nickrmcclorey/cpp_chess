@@ -25,6 +25,8 @@ public:
 	void setY(int);
 	void setXY(int, int); // set both the x and the y at the same time
 	string JSON_text(int yPos, int xPos) const;
+	
+	ChessPiece(string team_is_on, string type_of_piece);
 
 };
 
