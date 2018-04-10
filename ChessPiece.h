@@ -19,8 +19,8 @@ public:
 	string type();
 
 	// setters
-	void setTeam();
-	void setType();
+	void setTeam(string);
+	void setType(string);
 
 	// utility
 	string JSON_text(int yPos, int xPos) const;

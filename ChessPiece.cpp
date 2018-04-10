@@ -17,12 +17,27 @@ ChessPiece::ChessPiece(string team_its_on, string type) {
 	piece_type = type;
 }
 
+<<<<<<<<< saved version
+void ChessPiece::setTeam(string teamToSet) {
+	this->team_on = teamToSet;
+}
+
+void ChessPiece::setType(string typeToSet) {
+	this->piece_type = typeToSet;
+}
+
+=========
+ChessPiece::
+
+>>>>>>>>> local version
 string toString(int num) {
 
 	ostringstream raw;
 	raw << num;
 	return raw.str();
 }
+
+
 
 string ChessPiece::JSON_text(int xPos, int yPos) const {
 	

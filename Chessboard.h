@@ -39,6 +39,7 @@ public:
 	void move(int, int); // used to move a piece
 	ChessPiece& at(int x, int y); // could use to index board
 	void displayBoard() const; // used to display board for debugging
+	void makeJSONfile(string) const;
 
 	// functions we'd need to do a save, load game feature
 	void importGame(string file_to_import);

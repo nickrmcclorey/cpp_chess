@@ -7,7 +7,7 @@ using namespace std;
 
 int main() {
 
-	Chessboard num1;
+	
 	ChessPiece piece1("white","bishop");
 	string me = piece1.JSON_text(1, 4);
 	cout << me << endl;
