@@ -81,7 +81,13 @@ var board = document.getElementById('gameboard');
     createPattern();
 
 
+function clearBoard() {
+
+}
+
 function updateBoard(board_info) {
+
+
   // clear the board
   for (var k = 1; k < 9; k++) {
     for (var i = 1; i < 9; i++) {
@@ -92,8 +98,15 @@ function updateBoard(board_info) {
   // update board with info from json file
   for (var k = 0; k < board_info.pieces.length; k++) {
 
+    // get x and y position
     xpos = board_info.pieces[k].xPos;
     ypos = board_info.pieces[k].yPos;
+
+    // adjust x and y position for the html table
+    xpos++;
+    ypos++;
+
+    // put it on the board
     board.rows[xpos].cells[ypos].innerHTML = '<img src="chessPics/'+board_info.pieces[k].team+board_info.pieces[k].type+'.png"</img>';
 
   }
@@ -115,7 +128,7 @@ function updateBoard(board_info) {
   }
 
 // responsible for calling the function to update data
-document.addEventListener("click",function(){  request.open("GET", "current_game.json", true);
+document.addEventListener("click",function(){  request.open("GET", "saved_games/current.json", true);
   request.send();},false);
 
 </script>

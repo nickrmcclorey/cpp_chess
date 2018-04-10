@@ -15,6 +15,7 @@ private:
 	// that have to be filled with chess_pieces
 	// I'm willing to change it if it bugs you
 	ChessPiece board[8][8];
+	string turn;
 
 public:
 
@@ -22,6 +23,8 @@ public:
 	Chessboard();
 	Chessboard(string fileToImport); // could be a constructor to resume a game saved to a file 
 	Chessboard(vector<ChessPiece> gameboard); //could be used to create a gameboard with pieces in a certain spot.
+
+	string getTurn() const;
 
 	// functions to check to see if pieces are allowed to move
 	bool isAllowedToMove(int location_x, int location_y, int destination_x, int destination_y) const; // checks to see if a piece is allowed to move. could call other functions for specific pieces
@@ -47,7 +50,6 @@ public:
 	void saveGame(string fileName);
 	void newGame();
 
-	// we'll need to an operator overload for the = sign as there are pointers in the class.
 
 };
 
