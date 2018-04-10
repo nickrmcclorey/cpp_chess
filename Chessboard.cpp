@@ -63,20 +63,17 @@ void Chessboard::newGame() {
 }
     
     //on top self, on teammate, off board
-    bool Chessboard::isAllowedToMove(int location_x, int location_y, int destination_x, int destination_y) {
+    bool Chessboard::isAllowedToMove(int location_x, int location_y, int destination_x, int destination_y) const{
+        //TODO:: FINISH FUNCTION
         if (location_x == destination_x && location_y == destination_y){
             return false;
         }
         
-        if {
-            
-        }
+        return true;
     }
     
-    Chessboard::canMoveKing(){
-        
+    bool Chessboard::canMoveKing(int x, int y) const{
+        //TODO:: FINISH FUNCTION
+        return true;
     }
     
-}
-
-}
