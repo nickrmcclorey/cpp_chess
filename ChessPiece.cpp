@@ -7,6 +7,10 @@
 
 using namespace std;
 
+ChessPiece::ChessPiece(){
+	team_on = "No team";
+	piece_type = "empty"; 
+}
 
 ChessPiece::ChessPiece(string team_its_on, string type) {
 	team_on = team_its_on;

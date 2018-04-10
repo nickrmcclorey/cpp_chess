@@ -14,8 +14,7 @@ private:
 	// a 2d vector of pointers so there isn't empty spaces
 	// that have to be filled with chess_pieces
 	// I'm willing to change it if it bugs you
-	ChessPiece* board[8][8];
-	vector<ChessPiece> pieces;
+	ChessPiece board[8][8];
 
 public:
 
@@ -44,6 +43,7 @@ public:
 	// functions we'd need to do a save, load game feature
 	void importGame(string file_to_import);
 	void saveGame(string fileName);
+	void newGame();
 
 	// we'll need to an operator overload for the = sign as there are pointers in the class.
 
