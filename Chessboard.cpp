@@ -10,7 +10,7 @@ using namespace std;
 
 // should be used to set the initial positions of the pieces
 Chessboard::Chessboard() {
-    
+    this->newGame();
 }
 
 void Chessboard::newGame(){
@@ -23,7 +23,7 @@ void Chessboard::newGame(){
     
 
     for (int i = 0; i < 8; i++){
-        switch i
+        switch (i)
             case 0:
                 board[0][i].setType("rook");
                 board[7][i].setType("rook");
@@ -61,4 +61,20 @@ void Chessboard::newGame(){
         board[7][i].setTeam("white");
     }
     
+    //on top self, on teammate, off board
+    bool Chessboard::isAllowedToMove(int location_x, int location_y, int destination_x, int destination_y) {
+        if (location_x == destination_x && location_y == destination_y){
+            return false;
+        }
+        
+        if {
+            
+        }
+    }
+    
+    Chessboard::canMoveKing(){
+        
+    }
+    
 }
+

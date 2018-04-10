@@ -26,6 +26,7 @@ public:
 	string JSON_text(int yPos, int xPos) const;
 	
 	//constructors
+	ChessPiece();
 	ChessPiece(string team_is_on, string type_of_piece);
 
 };
