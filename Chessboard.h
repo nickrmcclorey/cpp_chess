@@ -24,7 +24,7 @@ public:
 	Chessboard(vector<ChessPiece> gameboard); //could be used to create a gameboard with pieces in a certain spot.
 
 	// functions to check to see if pieces are allowed to move
-	bool isAllowedToMove(int destination_x, int destination_y) const; // checks to see if a piece is allowed to move. could call other functions for specific pieces
+	bool isAllowedToMove(int location_x, int location_y, int destination_x, int destination_y) const; // checks to see if a piece is allowed to move. could call other functions for specific pieces
 	// each of the following functios would be called by the above function once the type of piece is known
 	bool canMoveKing(int, int) const;
 	bool canMoveQueen(int, int) const;

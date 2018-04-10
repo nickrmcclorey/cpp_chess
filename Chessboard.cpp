@@ -11,9 +11,8 @@ using namespace std;
 
 // should be used to set the initial positions of the pieces
 Chessboard::Chessboard() {
-	
+    this->newGame();
 }
-
 
 void Chessboard::newGame() {
 	for (int i = 0; i < 8; i++) {
@@ -22,7 +21,6 @@ void Chessboard::newGame() {
 		board[6][i].setType("pawn");
 		board[6][i].setTeam("white");
 	}
-
 
 	
     for (int i = 0; i < 8; i++) {
@@ -89,8 +87,20 @@ void Chessboard::makeJSONfile(string path) const {
 	
 }
 
-
-
-
-
-
+ 
+    
+    //on top self, on teammate, off board
+    bool Chessboard::isAllowedToMove(int location_x, int location_y, int destination_x, int destination_y) const{
+        //TODO:: FINISH FUNCTION
+        if (location_x == destination_x && location_y == destination_y){
+            return false;
+        }
+        
+        return true;
+    }
+    
+    bool Chessboard::canMoveKing(int x, int y) const{
+        //TODO:: FINISH FUNCTION
+        return true;
+    }
+    

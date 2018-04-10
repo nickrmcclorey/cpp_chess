@@ -33,12 +33,15 @@ void ChessPiece::setType(string typeToSet) {
 	this->piece_type = typeToSet;
 }
 
+
 string toString(int num) {
 
 	ostringstream raw;
 	raw << num;
 	return raw.str();
 }
+
+
 
 string ChessPiece::JSON_text(int xPos, int yPos) const {
 	
