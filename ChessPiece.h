@@ -31,7 +31,7 @@ public:
 	bool isKnight() const;
 	bool isRook() const;
 	bool isPawn() const;
-
+	bool isTeam(string) const;
 
 	//constructors
 	ChessPiece();

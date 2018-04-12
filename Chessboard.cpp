@@ -113,12 +113,12 @@ void Chessboard::changeTurn() {
 }
 
 
-ChessPiece Chessboard::move(int fromX, int fromY, int toX, int toY) {
+void Chessboard::move(int fromX, int fromY, int toX, int toY) {
 	
 	// empty piece to replace spot left
 	ChessPiece empty;
 	// get the piece captured. this could be an empty piece
-	ChessPiece captured_piece = board[toX][toY];
+	//essPiece captured_piece = board[toX][toY];
 	// move the piece to its destination
 	board[toX][toY] = board[fromX][fromY];
 	// erease the spot the piece was in
@@ -143,7 +143,7 @@ void Chessboard::makeJSONfile(string filename) const {
 
 	// check to see if it opened correctly 
 	if (!outfile.is_open()) {
-		cout << "Failed to opne file" << endl;
+		cout << "Failed to open file" << endl;
 		exit(0);
 	}
 
@@ -161,7 +161,7 @@ void Chessboard::makeJSONfile(string filename) const {
 		for (int col = 0; col < 8; col++) {
 
 			// if spot isn't empty then...
-			if (board[row][col].isEmpty()) {
+			if (!board[row][col].isEmpty()) {
 				// get the json text for that spot and put it in the outfile
 				object_data.append(board[row][col].JSON_text(row, col));
 				// add a comma
@@ -172,7 +172,7 @@ void Chessboard::makeJSONfile(string filename) const {
 		}
 	}
 
-	cout << "32 = " << counter << endl; // for debugging purposes
+	//cout << "32 = " << counter << endl; // for debugging purposes
 
 	// erease final comma as this comma will break the JSON validity
 	object_data.at(object_data.size() - 1) = ' ';
@@ -182,7 +182,7 @@ void Chessboard::makeJSONfile(string filename) const {
 	
 	//close file
 	outfile.close();
-	
+
 }
 
 bool Chessboard::isValidIndex(const int &x, const int &y) const {
@@ -195,21 +195,90 @@ bool Chessboard::isValidIndex(const int &x, const int &y) const {
 
 // checks to see if a piece is vulnerable to being hit
 bool Chessboard::isExposed(int xPos, int yPos) {
-	ChessPiece candidate = this->at(xPos, yPos);
-	string enemy = (strcmp(candidate.team().c_str(), "black")) ? "white" : "black";
+	
 
+	if (this->at(xPos, yPos).isEmpty()) {
+		return false;
+		cout << "empty" << endl;
+	}
+
+	ChessPiece candidate = this->at(xPos, yPos);
+	string enemy = (!strcmp(candidate.team().c_str(), "black")) ? "white" : "black";
+	
 	// looking for nearby kings
-	for (int row = 0; row < 3; row++) {
-		for (int col = 0; col < 3; col++) {
-			if (strcmp("king", this->at(row, col).type().c_str()))
+	for (int row = -1; row <= 1 ; row++) {
+		for (int col = -1; col <= 1; col++) {
+			if (!isValidIndex(xPos + row, yPos + col))
+				continue;
+
+			ChessPiece temp = this->at(xPos + row, yPos + col);	
+			if ((temp.isKing()) && temp.isTeam(enemy))
 				return true;
 		}
 	}
+	
 
-	// TODO: finish function
 	// looking for knights
-	if (this->isValidIndex(xPos, yPos) && strcmp(this->at(xPos + 1, yPos + 2).type().c_str(), "knight"))
+	if (this->isValidIndex(xPos + 1, yPos + 2) && this->at(xPos + 1, yPos + 2).isKnight()) {
 		return true;
+	} else if (this->isValidIndex(xPos - 1, yPos + 2) && this->at(xPos - 1, yPos + 2).isKnight()) {
+		return true;
+	} else if (this->isValidIndex(xPos + 1, yPos - 2 ) && this->at(xPos + 1, yPos - 2).isKnight()) {
+		return true;
+	} else if (this->isValidIndex(xPos - 1, yPos - 2) && this->at(xPos - 1, yPos - 2).isKnight()) {
+		return true;
+	} else if (this->isValidIndex(xPos + 2, yPos + 1) && this->at(xPos + 2, yPos + 1).isKnight()) {
+		return true;
+	} else if (this->isValidIndex(xPos - 2, yPos + 1) && this->at(xPos - 2, yPos + 1).isKnight()) {
+		return true;
+	} else if (this->isValidIndex(xPos + 2, yPos - 1) && this->at(xPos + 2, yPos - 1).isKnight()) {
+		return true;
+	} else if (this->isValidIndex(xPos - 2, yPos - 1) && this->at(xPos - 2, yPos - 1).isKnight()) {
+		return true;
+	}
+
+	return false; // rest of function isn't finished
+	//TODO: finish logic below
+
+	// looking for rooks
+	int adjustor = -1;
+	while ((this->isValidIndex(xPos + adjustor, yPos)) && (!board[xPos][yPos + adjustor].isTeam(candidate.team()))) {
+		
+		if ((board[xPos + adjustor][yPos].isBishop()) || (board[xPos + adjustor][yPos].isQueen()))
+			return true;
+
+		adjustor--;
+	}
+	
+	adjustor = 1;
+	while ((this->isValidIndex(xPos + adjustor, yPos)) && (!board[xPos][yPos + adjustor].isTeam(candidate.team()))) {
+
+		if ((board[xPos + adjustor][yPos].isBishop()) || (board[xPos + adjustor][yPos].isQueen()))
+			return true;
+
+		adjustor++;
+	}
+
+	adjustor = 1;
+	while ((this->isValidIndex(xPos, yPos + adjustor)) && (!board[xPos][yPos + adjustor].isTeam(candidate.team()))) {
+
+		if ((board[xPos][yPos + adjustor].isBishop()) || (board[xPos ][yPos + adjustor].isQueen()))
+			return true;
+
+		adjustor++;
+	}
+
+	adjustor = -1;
+	while ((this->isValidIndex(xPos, yPos + adjustor)) && (!board[xPos][yPos + adjustor].isTeam(candidate.team()))) {
+
+		if ((board[xPos][yPos + adjustor].isBishop()) || (board[xPos][yPos + adjustor].isQueen()))
+			return true;
+
+		adjustor--;
+	}
+
+
+	return false;
 
 }
  
@@ -218,7 +287,8 @@ bool Chessboard::isExposed(int xPos, int yPos) {
 	bool Chessboard::isAllowedToMove(int location_x, int location_y, int destination_x, int destination_y) const{
         //TODO:: FINISH FUNCTION
         if ((location_x == destination_x) && (location_y == destination_y)) {
-            return false;
+			cout << "invalid index" << endl;
+			exit(0);
         }
         
         return true;

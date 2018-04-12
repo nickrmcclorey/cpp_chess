@@ -39,7 +39,7 @@ public:
 	bool checkmate() const; // check for checkmate
 
 	// utility / mutators
-	ChessPiece move(int, int, int, int); // used to move a piece
+	void move(int, int, int, int); // used to move a piece
 	ChessPiece at(int x, int y); // could use to index board
 	void displayBoard() const; // used to display board for debugging
 	bool isExposed(int xPos, int yPos);
