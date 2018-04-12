@@ -9,18 +9,12 @@ int main() {
 
 	Chessboard x;
 	
-	for (int row = 0; row < 8; row++) {
-		for (int col = 0; col < 8; col++) {
-			cout << row << "," << col << " =" << endl;
-			cout << x.at(row,col).team() << x.at(row,col).type() << endl;
-		}
-	}
-
-	
+	x.move(7, 7, 3, 4);
 	x.makeJSONfile("current.json");
 	
 
-	cout << x.at(0, 7).team() << endl;
+	cout << x.at(7, 7).team() << endl;
+	x.move(0, 0, 7, 7);
 	cout << x.at(7, 7).team() << endl;
 
 	return 0;

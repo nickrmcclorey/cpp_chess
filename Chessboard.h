@@ -39,11 +39,14 @@ public:
 	bool checkmate() const; // check for checkmate
 
 	// utility / mutators
-	void move(int, int); // used to move a piece
-	ChessPiece& at(int x, int y); // could use to index board
+	ChessPiece move(int, int, int, int); // used to move a piece
+	ChessPiece at(int x, int y); // could use to index board
 	void displayBoard() const; // used to display board for debugging
+	bool isExposed(int xPos, int yPos);
+	bool isValidIndex(const int &x, const int &y) const;
 	void makeJSONfile(string) const;
 	vector<ChessPiece> allPieces() const;
+	void changeTurn();
 
 	// functions we'd need to do a save, load game feature
 	void importGame(string file_to_import);

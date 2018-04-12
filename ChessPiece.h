@@ -25,6 +25,13 @@ public:
 	// utility
 	string JSON_text(int yPos, int xPos) const;
 	bool isEmpty() const;
+	bool isKing() const;
+	bool isQueen() const;
+	bool isBishop() const;
+	bool isKnight() const;
+	bool isRook() const;
+	bool isPawn() const;
+
 
 	//constructors
 	ChessPiece();
