@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include "Chessboard.h"
 #include "ChessPiece.h"
+#include "utility.h"
 #include <cstring>
 #include <sstream>
 #include <string>
@@ -58,10 +59,10 @@ string toString(int num) {
 string ChessPiece::JSON_text(int xPos, int yPos) const {
 	
 	// get individual keys and values
-	string teamInfo = "\"team\":\"" + this->team() + "\",\n";
-	string piece_type = "\"type\":\"" + this->type() + "\",\n";
-	string xPos_text = "\"xPos\":\"" + toString(xPos) + "\",\n";
-	string yPos_text = "\"yPos\":\"" + toString(yPos) + "\"\n";	
+	string teamInfo = "\"team\" : \"" + this->team() + "\",\n";
+	string piece_type = "\"type\" : \"" + this->type() + "\",\n";
+	string xPos_text = "\"xPos\" : \"" + toString(xPos) + "\",\n";
+	string yPos_text = "\"yPos\" : \"" + toString(yPos) + "\"\n";	
 
 	// combine stirngs from above and wrap it in curly brackets
 	string toReturn = "{\n" + teamInfo + piece_type + xPos_text + yPos_text + "}";

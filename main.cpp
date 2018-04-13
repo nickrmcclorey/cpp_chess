@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include "ChessPiece.h"
 #include "Chessboard.h"
+#include "utility.h"
+
 
 using namespace std;
 
@@ -67,13 +69,21 @@ void testisExposed() {
 	x.makeJSONfile("current.json");
 }
 
+void testImport() {
+	Chessboard x;
+	cout << "empty = " << x.at(3, 4).type() << endl;
+	x.importGame("current.json");
+	cout << "whiterook = " << x.at(3, 4).team() << x.at(3, 4).type() << endl;
+}
+
 
 int main() {
 
 	//x.makeJSONfile("current.json");
 
 	testisExposed();
-	
+	testImport();
+
 	system("pause");
 	return 0;
 }

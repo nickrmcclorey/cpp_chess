@@ -1,6 +1,7 @@
 #include <iostream>
 #include "ChessPiece.h"
 #include "Chessboard.h"
+#include "utility.h"
 #include <cstdlib>
 #include <fstream>
 #include <string>
@@ -178,7 +179,7 @@ void Chessboard::makeJSONfile(string filename) const {
 	object_data.at(object_data.size() - 1) = ' ';
 
 	// put a cap on the pieces array and output the current turn
-	outfile << object_data << "],\n\"turn\":\"" << turn << "\" \n}";
+	outfile << object_data << "],\n\"turn\" : \"" << turn << "\" \n}";
 	
 	//close file
 	outfile.close();
@@ -357,17 +358,91 @@ void Chessboard::saveGame(string filename) const {
 	}
 }
 
+string textInside(string quotes, string raw) {
+	// check to make sure both quotes actually exist
+	if (raw.find(quotes.at(0)) == string::npos || raw.find(raw.at(1)) == string::npos) {
+		cout << "quotes don't exist" << endl;
+		cout << raw << endl;
+		exit(0);
+	}
+	
+	// find the opening quote and cut off everything before that
+	raw = raw.substr(raw.find(quotes.at(0))+1);
+	// return everything up to the terminating character
+	return raw.substr(0, raw.find(quotes.at(1)));
+
+}
+
+string valueFromKey(string key, string raw) {
+	//find the key
+	key = raw.substr(raw.find(key));
+	// find the colon after the key
+	string value = key.substr(key.find(":") + 1);
+	// find the value after the colon and return the text inside the quotes
+	return textInside("\"\"", value);
+}
+
 void Chessboard::importGame(string filename) {
 	
+	// input file
 	ifstream infile;
+	// prepend the saved_games folder to the filename to get the path
 	string path = "saved_games\\" + filename;
 	infile.open(path.c_str());
 
+	//check to make sure it opens correctly;
 	if (!infile.is_open()) {
 		cout << "failed to open file" << endl;
 		exit(0);
 	}
 
+	// holds the entire file
+	string raw;
+	
+	while (!infile.eof()) {
+		// holds one line
+		string wholeLine;
+		// get the line and store it in a string
+		getline(infile,wholeLine);
+		// append a new line to raw
+		raw.append("\n");
+		// put in the new line
+		raw.append(wholeLine);
+
+		
+	}
+
+	// contains text inside the "pieces" array in the JSON file
+	string pieces = textInside("[]", raw);
+	
+	// holds one object in the json file
+	string object;
+
+	int counter = 0;
+	do {
+		// get the information for one chess piece
+		object = textInside("{}",pieces);
+		
+		// declare the new chess piece an initialize it with values from the object
+		ChessPiece newPiece(valueFromKey("team", object), valueFromKey("type", object));
+		
+		// get the x and y positions of the piece
+		int xPos = stoi(valueFromKey("xPos",object));
+		int yPos = stoi(valueFromKey("yPos", object));
+
+		// put the piece on the board
+		board[xPos][yPos] = newPiece;
+
+		// cut off the previous object
+		pieces = pieces.substr(pieces.find("}") + 1);
+		//cout << pieces << "\n\n\n\n\n";
+		
+		// the last element of the array doesn't have a comma. this is how we know when to stop
+	} while (!(pieces.find(",") == string::npos));
+	
+		
+	// murder the infile
+	infile.close();
 
 }
 
