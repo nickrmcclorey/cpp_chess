@@ -2,11 +2,6 @@
 	"pieces": [
 	{
 "team":"black",
-"type":"rook",
-"xPos":"0",
-"yPos":"0"
-},{
-"team":"black",
 "type":"knight",
 "xPos":"0",
 "yPos":"1"
@@ -75,6 +70,11 @@
 "type":"pawn",
 "xPos":"1",
 "yPos":"7"
+},{
+"team":"black",
+"type":"rook",
+"xPos":"3",
+"yPos":"0"
 },{
 "team":"white",
 "type":"rook",
@@ -92,6 +92,11 @@
 "yPos":"2"
 },{
 "team":"white",
+"type":"bishop",
+"xPos":"5",
+"yPos":"4"
+},{
+"team":"white",
 "type":"pawn",
 "xPos":"6",
 "yPos":"0"
@@ -155,11 +160,6 @@
 "type":"king",
 "xPos":"7",
 "yPos":"4"
-},{
-"team":"white",
-"type":"bishop",
-"xPos":"7",
-"yPos":"5"
 } ],
 "turn":"white" 
 }

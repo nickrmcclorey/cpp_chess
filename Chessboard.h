@@ -50,7 +50,7 @@ public:
 
 	// functions we'd need to do a save, load game feature
 	void importGame(string file_to_import);
-	void saveGame(string fileName);
+	void saveGame(string fileName) const;
 	void newGame();
 
 

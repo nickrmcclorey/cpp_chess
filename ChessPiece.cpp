@@ -70,49 +70,49 @@ string ChessPiece::JSON_text(int xPos, int yPos) const {
 
 bool ChessPiece::isEmpty() const{
 	
-	if (!strcmp(piece_type.c_str(), "empty") )
+	if (!strcmpi(piece_type.c_str(), "empty") )
 		return true;
 	else
 		return false;
 }
 
 bool ChessPiece::isKing() const {
-	if (!strcmp(piece_type.c_str(), "king"))
+	if (!strcmpi(piece_type.c_str(), "king"))
 		return true;
 	else
 		return false;
 }
 
 bool ChessPiece::isQueen() const {
-	if (!strcmp(piece_type.c_str(), "queen"))
+	if (!strcmpi(piece_type.c_str(), "queen"))
 		return true;
 	else
 		return false;
 }
 
 bool ChessPiece::isBishop() const {
-	if (!strcmp(piece_type.c_str(), "bishop"))
+	if (!strcmpi(piece_type.c_str(), "bishop"))
 		return true;
 	else
 		return false;
 }
 
 bool ChessPiece::isKnight() const {
-	if (!strcmp(piece_type.c_str(), "knight"))
+	if (!strcmpi(piece_type.c_str(), "knight"))
 		return true;
 	else
 		return false;
 }
 
 bool ChessPiece::isRook() const {
-	if (!strcmp(piece_type.c_str(), "Rook"))
+	if (!strcmpi(piece_type.c_str(), "Rook"))
 		return true;
 	else
 		return false;
 }
 
 bool ChessPiece::isPawn() const {
-	if (!strcmp(piece_type.c_str(), "pawn"))
+	if (!strcmpi(piece_type.c_str(), "pawn"))
 		return true;
 	else
 		return false;

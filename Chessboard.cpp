@@ -17,7 +17,7 @@ Chessboard::Chessboard() {
 
 // creates a new game with pieces in their default position
 void Chessboard::newGame() {
-	cout << "activated" << endl;
+	//cout << "activated" << endl;
 	for (int i = 0; i < 8; i++) {
 		board[1][i].setType("pawn");
 		board[1][i].setTeam("black");
@@ -199,7 +199,6 @@ bool Chessboard::isExposed(int xPos, int yPos) {
 
 	if (this->at(xPos, yPos).isEmpty()) {
 		return false;
-		cout << "empty" << endl;
 	}
 
 	ChessPiece candidate = this->at(xPos, yPos);
@@ -237,51 +236,141 @@ bool Chessboard::isExposed(int xPos, int yPos) {
 		return true;
 	}
 
-	return false; // rest of function isn't finished
+	//return false; // rest of function isn't finished
 	//TODO: finish logic below
 
-	// looking for rooks
-	int adjustor = -1;
-	while ((this->isValidIndex(xPos + adjustor, yPos)) && (!board[xPos][yPos + adjustor].isTeam(candidate.team()))) {
-		
-		if ((board[xPos + adjustor][yPos].isBishop()) || (board[xPos + adjustor][yPos].isQueen()))
-			return true;
+	// === looking for rooks === \\
 
-		adjustor--;
-	}
-	
-	adjustor = 1;
-	while ((this->isValidIndex(xPos + adjustor, yPos)) && (!board[xPos][yPos + adjustor].isTeam(candidate.team()))) {
-
-		if ((board[xPos + adjustor][yPos].isBishop()) || (board[xPos + adjustor][yPos].isQueen()))
-			return true;
-
+	// going horizontal
+	int adjustor = 1;
+	// while valid index and haven't run into teammate
+	while ((this->isValidIndex(xPos + adjustor, yPos)) && (board[xPos + adjustor][yPos].isEmpty())) {
 		adjustor++;
 	}
-
-	adjustor = 1;
-	while ((this->isValidIndex(xPos, yPos + adjustor)) && (!board[xPos][yPos + adjustor].isTeam(candidate.team()))) {
-
-		if ((board[xPos][yPos + adjustor].isBishop()) || (board[xPos ][yPos + adjustor].isQueen()))
+	// found invalid index or next piece in path. if this piece is a rook or queen
+	if (this->isValidIndex(xPos + adjustor, yPos)) {
+		ChessPiece attacker = board[xPos + adjustor][yPos];
+		if ((attacker.isTeam(enemy)) && (attacker.isQueen() || attacker.isRook()))
 			return true;
-
-		adjustor++;
 	}
+
+
 
 	adjustor = -1;
-	while ((this->isValidIndex(xPos, yPos + adjustor)) && (!board[xPos][yPos + adjustor].isTeam(candidate.team()))) {
-
-		if ((board[xPos][yPos + adjustor].isBishop()) || (board[xPos][yPos + adjustor].isQueen()))
-			return true;
-
+	// while valid index and haven't run into teammate
+	while ((this->isValidIndex(xPos + adjustor, yPos)) && (board[xPos + adjustor][yPos].isEmpty())) {
 		adjustor--;
 	}
+	if (this->isValidIndex(xPos + adjustor, yPos)) {
+		ChessPiece attacker = board[xPos + adjustor][yPos];
+		if ((attacker.isTeam(enemy)) && (attacker.isQueen() || attacker.isRook()))
+			return true;
+	}
+    
 
+	// adjusting y position
+	adjustor = 1;
+	while ((this->isValidIndex(xPos, yPos + adjustor)) && (board[xPos][yPos + adjustor].isEmpty())) {
+		adjustor++;
+	}
+	if (this->isValidIndex(xPos, yPos + adjustor)) {
+		ChessPiece attacker = board[xPos][yPos + adjustor];
+		if ((attacker.isTeam(enemy)) && (attacker.isQueen() || attacker.isRook()))
+			return true;
+	}
+
+
+
+	adjustor = -1;
+	while ((this->isValidIndex(xPos, yPos + adjustor)) && (board[xPos][yPos + adjustor].isEmpty())) {
+		adjustor--;
+	}
+	if (this->isValidIndex(xPos, yPos + adjustor)) {
+		ChessPiece attacker = board[xPos][yPos + adjustor];
+		if ((attacker.isTeam(enemy)) && (attacker.isQueen() || attacker.isRook()))
+			return true;
+	}
+
+	
+	// === looking for bishops === \\
+	
+	int yAdjustor = 1;
+	int xAdjustor = 1;
+	while ((this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) && (board[xPos + xAdjustor][yPos + yAdjustor].isEmpty())) {
+		xAdjustor++; 
+		yAdjustor++; 
+	} 
+	if (this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) {
+		ChessPiece attacker = board[xPos + xAdjustor][yPos + yAdjustor];
+		if ((attacker.isTeam(enemy)) && (attacker.isBishop() || attacker.isQueen()))
+			return true;
+	}
+
+
+	yAdjustor = -1;
+	xAdjustor = 1;
+	while ((this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) && (board[xPos + xAdjustor][yPos + yAdjustor].isEmpty())) {
+		xAdjustor++;
+		yAdjustor--;
+	}
+	if (this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) {
+		ChessPiece attacker = board[xPos + xAdjustor][yPos + yAdjustor];
+		if ((attacker.isTeam(enemy)) && (attacker.isBishop() || attacker.isQueen()))
+			return true;
+	}
+
+
+	yAdjustor = 1;
+	xAdjustor = -1;
+	while ((this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) && (board[xPos + xAdjustor][yPos + yAdjustor].isEmpty())) {
+		xAdjustor--;
+		yAdjustor++;
+	}
+	if (this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) {
+		ChessPiece attacker = board[xPos + xAdjustor][yPos + yAdjustor];
+		if ((attacker.isTeam(enemy)) && (attacker.isBishop() || attacker.isQueen()))
+			return true;
+	}
+
+	yAdjustor = -1;
+	xAdjustor = -1;
+	while ((this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) && (board[xPos + xAdjustor][yPos + yAdjustor].isEmpty())) {
+		xAdjustor--;
+		yAdjustor--;
+	}
+	if (isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) {
+		ChessPiece attacker = board[xPos + xAdjustor][yPos + yAdjustor];
+		if ((attacker.isTeam(enemy)) && (attacker.isBishop() || attacker.isQueen()))
+			return true;
+	}
 
 	return false;
 
 }
  
+void Chessboard::saveGame(string filename) const {
+	if (filename.find("current_game")) {
+		cout << "cant't use that filename to save game" << endl;
+		exit(0);
+	} else {
+		this->makeJSONfile(filename);
+	}
+}
+
+void Chessboard::importGame(string filename) {
+	
+	ifstream infile;
+	string path = "saved_games\\" + filename;
+	infile.open(path.c_str());
+
+	if (!infile.is_open()) {
+		cout << "failed to open file" << endl;
+		exit(0);
+	}
+
+
+}
+
     
     //on top self, on teammate, off board
 	bool Chessboard::isAllowedToMove(int location_x, int location_y, int destination_x, int destination_y) const{

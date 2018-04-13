@@ -53,8 +53,18 @@ void testisExposed() {
 	cout << "0 = " << x.isExposed(1, 5) << endl;
 	x.move(4, 6, 3, 6);
 	cout << "1 = " << x.isExposed(1, 5) << endl;
+
+	x.move(0, 0, 3, 0);
+	cout << "1 = " << x.isExposed(3, 0) << endl;
+	cout << "0 = " << x.isExposed(3, 6) << endl;
 	x.makeJSONfile("current.json");
 
+	x.move(7, 5, 5, 4);
+	cout << "1 = " << x.isExposed(1, 0) << endl;
+	cout << "0 = " << x.isExposed(0, 1) << endl;
+
+	cout << "blackpawn = " << x.at(1, 1).team() << x.at(1, 1).type() << endl;
+	x.makeJSONfile("current.json");
 }
 
 
