@@ -205,7 +205,7 @@ bool Chessboard::isExposed(int xPos, int yPos) {
 	ChessPiece candidate = this->at(xPos, yPos);
 	string enemy = (!strcmp(candidate.team().c_str(), "black")) ? "white" : "black";
 	
-	// looking for nearby kings
+	// looking for nearby kings and pawns
 	for (int row = -1; row <= 1 ; row++) {
 		for (int col = -1; col <= 1; col++) {
 			if (!isValidIndex(xPos + row, yPos + col))
@@ -295,12 +295,28 @@ bool Chessboard::isExposed(int xPos, int yPos) {
 	
 	// === looking for bishops === \\
 	
+
+	vector <ChessPiece> attackers;
+	attackers.push_back( this->findDiagonal(xPos, yPos, 1, 1));
+	attackers.push_back( this->findDiagonal(xPos, yPos, -1, 1));
+	attackers.push_back( this->findDiagonal(xPos, yPos, 1, -1));
+	attackers.push_back( this->findDiagonal(xPos, yPos, -1, -1));
+
+	for (int k = 0; k < attackers.size(); k++) {
+		ChessPiece attacker = attackers.at(k);
+		if ((attacker.isTeam(enemy)) && (attacker.isBishop() || attacker.isQueen()))
+			return true;
+	}
+
+	// these are used to look the spots diagonally from the selected piece
 	int yAdjustor = 1;
 	int xAdjustor = 1;
+	// find the first invalid index or another piece
 	while ((this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) && (board[xPos + xAdjustor][yPos + yAdjustor].isEmpty())) {
 		xAdjustor++; 
 		yAdjustor++; 
 	} 
+	// evaluate the next pieces in diagonal index
 	if (this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) {
 		ChessPiece attacker = board[xPos + xAdjustor][yPos + yAdjustor];
 		if ((attacker.isTeam(enemy)) && (attacker.isBishop() || attacker.isQueen()))
@@ -345,10 +361,29 @@ bool Chessboard::isExposed(int xPos, int yPos) {
 			return true;
 	}
 
+	// queen was checked when we were looking for rooks and queens
+
 	return false;
 
 }
  
+ChessPiece Chessboard::findDiagonal(int xPos, int yPos, int xDir, int yDir) const {
+	ChessPiece toReturn;
+	int yAdjustor = yDir;
+	int xAdjustor = xDir;
+	while ((this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) && (board[xPos + xAdjustor][yPos + yAdjustor].isEmpty())) {
+		xAdjustor = (abs(xAdjustor) + 1) * xDir;
+		yAdjustor = (abs(yAdjustor) + 1) * yDir;
+	}
+	if (isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) {
+		toReturn = board[xPos + xAdjustor][yPos + yAdjustor];
+		
+	}
+
+	return toReturn;
+}
+
+
 void Chessboard::saveGame(string filename) const {
 	if (filename.find("current_game")) {
 		cout << "cant't use that filename to save game" << endl;

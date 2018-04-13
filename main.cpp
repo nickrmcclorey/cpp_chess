@@ -82,7 +82,7 @@ int main() {
 	//x.makeJSONfile("current.json");
 
 	testisExposed();
-	testImport();
+	//testImport();
 
 	system("pause");
 	return 0;
