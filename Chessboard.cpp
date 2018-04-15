@@ -73,6 +73,11 @@ void Chessboard::newGame() {
 	turn = "white";
 }
 
+Chessboard::Chessboard(string fileToLoad) {
+	this->loadGame(fileToLoad);
+}
+
+
 // returns piece at location
 ChessPiece Chessboard::at(int x, int y) {
 	if ((x > 7) || (x < 0) || (y > 7) || (y < 0)){
@@ -106,6 +111,18 @@ vector<ChessPiece> Chessboard::allPieces() const {
 // returns the which players turn it is
 string Chessboard::getTurn() const {
 	return turn;
+}
+
+bool Chessboard::AI_is_playing() const {
+	return AI_playing;
+}
+
+void Chessboard::turn_AI_on() {
+	AI_playing = true;
+}
+
+void Chessboard::turn_AI_off() {
+	AI_playing = false;
 }
 
 // changes the turn
@@ -417,7 +434,7 @@ string valueFromKey(string key, string raw) {
 	return textInside("\"\"", value);
 }
 
-void Chessboard::importGame(string filename) {
+void Chessboard::loadGame(string filename) {
 	
 	// input file
 	ifstream infile;

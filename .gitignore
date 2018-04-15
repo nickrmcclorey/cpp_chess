@@ -1,3 +1,4 @@
 *.exe
 *.out
 saved_games/current.json
+*.json

@@ -16,6 +16,7 @@ private:
 	// I'm willing to change it if it bugs you
 	ChessPiece board[8][8];
 	string turn;
+	bool AI_playing;
 
 public:
 
@@ -25,6 +26,9 @@ public:
 	Chessboard(vector<ChessPiece> gameboard); //could be used to create a gameboard with pieces in a certain spot.
 
 	string getTurn() const;
+	bool AI_is_playing() const;
+	void turn_AI_off();
+	void turn_AI_on();
 
 	// functions to check to see if pieces are allowed to move
 	bool isAllowedToMove(int location_x, int location_y, int destination_x, int destination_y) const; // checks to see if a piece is allowed to move. could call other functions for specific pieces
@@ -50,7 +54,7 @@ public:
 	void changeTurn();
 
 	// functions we'd need to do a save, load game feature
-	void importGame(string file_to_import);
+	void loadGame(string file_to_import);
 	void saveGame(string fileName) const;
 	void newGame();
 
