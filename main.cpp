@@ -10,6 +10,7 @@
 using namespace std;
 
 void testBoard() {
+	cout << "testing board" << endl;
 	Chessboard x;
 
 	//x.move(7, 7, 3, 4);
@@ -28,6 +29,7 @@ void testBoard() {
 
 
 void testJSON() {
+	cout << "printing json text for white bishop" << endl << endl;
 	ChessPiece piece1("white", "bishop");
 
 	string me = piece1.JSON_text(1, 4);
@@ -38,12 +40,14 @@ void testJSON() {
 }
 
 void testPiece() {
+	cout << "testing pieces" << endl;
 	ChessPiece test("black", "bishop");
 	cout << "0 = " << test.isEmpty() << endl;
 	cout << "1 = " << test.isBishop() << endl;
 }
 
 void testisExposed() {
+	cout << "Testing is exposed" << endl;
 	Chessboard x;
 
 	x.move(7, 7, 3, 4);
@@ -71,11 +75,15 @@ void testisExposed() {
 	x.makeJSONfile("current.json");
 }
 
-void testImport() {
-	Chessboard x;
-	cout << "empty = " << x.at(3, 4).type() << endl;
-	x.loadGame("current.json");
-	cout << "whiterook = " << x.at(3, 4).team() << x.at(3, 4).type() << endl;
+void testFileIO() {
+	Chessboard original;
+	original.move(0, 0, 3, 5);
+	original.makeJSONfile("testImportExport.json");
+	original.makeJSONfile("current");
+
+	Chessboard importedBoard("testImportExport.json");
+	cout << original.at(3, 5).team() << original.at(3, 5).type() << " = " << importedBoard.at(3, 5).team() << importedBoard.at(3, 5).type() << endl;
+
 }
 
 
@@ -200,10 +208,12 @@ void mainMenu() {
 
 int main() {
 
+	vector<int> hi = moveFromUserString("b2 to 4D");
+	return 0;
 	//x.makeJSONfile("current.json");
 
+	testFileIO();
 	testisExposed();
-	//testImport();
 
 	system("pause");
 	return 0;

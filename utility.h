@@ -3,6 +3,7 @@
 using namespace std;
 
 int stoi(string num_s);
+vector<int> moveFromUserString(string raw);
 
 
 
