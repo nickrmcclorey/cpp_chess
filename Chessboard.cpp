@@ -81,7 +81,7 @@ Chessboard::Chessboard(string fileToLoad) {
 // returns piece at location
 ChessPiece Chessboard::at(int x, int y) {
 	if ((x > 7) || (x < 0) || (y > 7) || (y < 0)){
-		throw logic_error("Not valid Index");
+		// FIX ME throw logic_error("Not valid Index");
 	}
 	
 	ChessPiece toReturn = board[x][y];
