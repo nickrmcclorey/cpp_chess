@@ -50,7 +50,7 @@ public:
 	void displayBoard() const; // used to display board for debugging
 	bool isExposed(int xPos, int yPos);
 	bool isValidIndex(const int &x, const int &y) const;
-	ChessPiece findDiagonal(int, int, int, int) const;
+	vector<int> findDiagonal(int, int, int, int) const;
 	void makeJSONfile(string) const;
 	vector<ChessPiece> allPieces() const;
 	void changeTurn();

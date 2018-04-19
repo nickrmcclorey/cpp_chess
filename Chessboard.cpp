@@ -318,10 +318,10 @@ bool Chessboard::isExposed(int xPos, int yPos) {
 	
 
 	vector <ChessPiece> attackers;
-	attackers.push_back( this->findDiagonal(xPos, yPos, 1, 1));
+	/*attackers.push_back( this->findDiagonal(xPos, yPos, 1, 1));
 	attackers.push_back( this->findDiagonal(xPos, yPos, -1, 1));
 	attackers.push_back( this->findDiagonal(xPos, yPos, 1, -1));
-	attackers.push_back( this->findDiagonal(xPos, yPos, -1, -1));
+	attackers.push_back( this->findDiagonal(xPos, yPos, -1, -1));*/
 
 	for (int k = 0; k < attackers.size(); k++) {
 		ChessPiece attacker = attackers.at(k);
@@ -388,7 +388,7 @@ bool Chessboard::isExposed(int xPos, int yPos) {
 
 }
  
-ChessPiece Chessboard::findDiagonal(int xPos, int yPos, int xDir, int yDir) const {
+vector<int> Chessboard::findDiagonal(int xPos, int yPos, int xDir, int yDir) const {
 	ChessPiece toReturn;
 	int yAdjustor = yDir;
 	int xAdjustor = xDir;
@@ -396,12 +396,8 @@ ChessPiece Chessboard::findDiagonal(int xPos, int yPos, int xDir, int yDir) cons
 		xAdjustor = (abs(xAdjustor) + 1) * xDir;
 		yAdjustor = (abs(yAdjustor) + 1) * yDir;
 	}
-	if (isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) {
-		toReturn = board[xPos + xAdjustor][yPos + yAdjustor];
-		
-	}
 
-	return toReturn;
+	return { xPos + xAdjustor, yPos + yAdjustor };
 }
 
 
