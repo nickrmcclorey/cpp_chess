@@ -143,7 +143,30 @@ Chessboard importGame() {
 
 
 void playChess(Chessboard game) {
+
+
+	vector<int> moveVec(4,-1);
+	do {
+		cout << "Enter your move" << endl;
+		cout << "type \"menu\" for more options" << endl;
+
+		string userInput;
+		getline(cin, userInput);
+
+		moveVec = moveFromUserString(userInput);
+		if (moveVec.at(0) == -1 || (!game.isAllowedToMove(moveVec.at(0), moveVec.at(1), moveVec.at(2), moveVec.at(3)))) {
+			cout << "That isn't a valid move" << endl;
+			continue;
+		} else {
+			break;
+		}
+	} while (moveVec.at(0) != -1);
+
+	cout << "moving piece" << endl;
+	game.move(moveVec);
+
 	
+
 }
 
 // main menu used to set up game

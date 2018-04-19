@@ -17,6 +17,7 @@ private:
 	ChessPiece board[8][8];
 	string turn;
 	bool AI_playing;
+	string AI_team;
 
 public:
 
@@ -44,6 +45,7 @@ public:
 
 	// utility / mutators
 	void move(int, int, int, int); // used to move a piece
+	void move(vector<int> moveSet); // same as function above but ints are in vector
 	ChessPiece at(int x, int y); // could use to index board
 	void displayBoard() const; // used to display board for debugging
 	bool isExposed(int xPos, int yPos);

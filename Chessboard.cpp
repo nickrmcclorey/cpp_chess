@@ -144,6 +144,10 @@ void Chessboard::move(int fromX, int fromY, int toX, int toY) {
 	
 }
 
+void Chessboard::move(vector<int> moveSet) {
+	this->move(moveSet.at(0), moveSet.at(1), moveSet.at(2), moveSet.at(3));
+}
+
 void Chessboard::makeJSONfile(string filename) const {
 	
 	// file to store json text in
