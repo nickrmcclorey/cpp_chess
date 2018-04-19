@@ -44,6 +44,8 @@ void testPiece() {
 	ChessPiece test("black", "bishop");
 	cout << "0 = " << test.isEmpty() << endl;
 	cout << "1 = " << test.isBishop() << endl;
+	test.setType("knight");
+	cout << "1 = " << test.isKnight() << endl;
 }
 
 void testisExposed() {
@@ -208,10 +210,8 @@ void mainMenu() {
 
 int main() {
 
-	vector<int> hi = moveFromUserString("b2 to 4D");
+	testPiece();
 	return 0;
-	//x.makeJSONfile("current.json");
-
 	testFileIO();
 	testisExposed();
 
