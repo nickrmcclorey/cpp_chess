@@ -510,8 +510,19 @@ void Chessboard::loadGame(string filename) {
         return true;
     }
     
-    bool Chessboard::canMoveKing(int x, int y) const{
+    bool Chessboard::canMoveKing(int location_x, int location_y, int destination_x, int destination_y) const{
         //TODO:: FINISH FUNCTION
-        return true;
+        if (location_x == destination_x && location_y == destination_y){
+			return false;        	
+        }
+        else if(!isValidIndex(location_x, location_y) && !isValidIndex(destination_x, destination_y)){
+        	return false;
+        }
+        else if (abs(location_x - destination_x)<=1 && (abs(location_y - destination_y)<=1)){
+        	return true;
+        }
+        else{
+        	return false;
+        }
     }
     
