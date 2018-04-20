@@ -230,8 +230,8 @@ bool Chessboard::isExposed(int xPos, int yPos) {
 		return false;
 	}
 
-	ChessPiece candidate = this->at(xPos, yPos);
-	string enemy = (!strcmp(candidate.team().c_str(), "black")) ? "white" : "black";
+	//ChessPiece candidate = this->at(xPos, yPos);
+	string enemy = (!strcmp(this->getTurn().c_str(), "black")) ? "white" : "black";
 	
 	// looking for nearby kings and pawns
 	for (int row = -1; row <= 1 ; row++) {
@@ -400,11 +400,41 @@ vector<int> Chessboard::findDiagonal(int xPos, int yPos, int xDir, int yDir) con
 	int yAdjustor = yDir;
 	int xAdjustor = xDir;
 	while ((this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) && (board[xPos + xAdjustor][yPos + yAdjustor].isEmpty())) {
-		xAdjustor = (abs(xAdjustor) + 1) * xDir;
+		xAdjustor = (abs(xAdjustor) + 1) * xDir; 
 		yAdjustor = (abs(yAdjustor) + 1) * yDir;
 	}
 
 	return { xPos + xAdjustor, yPos + yAdjustor };
+}
+
+
+bool Chessboard::checkmate() {
+
+	int kingX = -1, kingY = -1;
+
+	for (int row = 0; row < 7; row++) {
+		for (int col = 0; col < 7; col++) {
+			ChessPiece spot;
+			if (spot.isKing() && spot.isTeam(this->getTurn())) {
+				kingX = col;
+				kingY = row;
+			}
+		}
+	}
+
+	
+	if (!this->isExposed(kingX, kingY))
+		return false;
+
+	for (int row = -1; row <= 1; row++) {
+		for (int col = -1; row <= 1; row++) {
+			if (this->isAllowedToMove(kingX, kingY, kingX+col, kingY+row) && !isExposed(kingX, kingY)) {
+				return false;
+			}
+		}
+	}
+
+	return true;
 }
 
 
@@ -417,6 +447,7 @@ void Chessboard::saveGame(string filename) const {
 	}
 }
 
+// is given a set of quotes (i.e [] () {} "") and returns all the text inside the quotes 
 string textInside(string quotes, string raw) {
 	// check to make sure both quotes actually exist
 	if (raw.find(quotes.at(0)) == string::npos || raw.find(raw.at(1)) == string::npos) {
@@ -432,6 +463,7 @@ string textInside(string quotes, string raw) {
 
 }
 
+// gets the value from a JSON value given the variable to look for
 string valueFromKey(string key, string raw) {
 	//find the key
 	key = raw.substr(raw.find(key));

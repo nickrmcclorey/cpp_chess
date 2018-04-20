@@ -43,7 +43,7 @@ public:
 	bool canMoveKnight(int, int, int, int) const;
 	bool canMovePawn(int, int, int, int) const;
 
-	bool checkmate() const; // check for checkmate
+	bool checkmate(); // check for checkmate
 
 	// utility / mutators
 	void move(int, int, int, int); // used to move a piece
