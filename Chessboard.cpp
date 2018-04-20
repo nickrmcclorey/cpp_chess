@@ -324,11 +324,17 @@ bool Chessboard::isExposed(int xPos, int yPos) {
 	// === looking for bishops === \\
 	
 
+	// get all the pieces looking in the diagonal direction
 	vector <ChessPiece> attackers;
-	/*attackers.push_back( this->findDiagonal(xPos, yPos, 1, 1));
-	attackers.push_back( this->findDiagonal(xPos, yPos, -1, 1));
-	attackers.push_back( this->findDiagonal(xPos, yPos, 1, -1));
-	attackers.push_back( this->findDiagonal(xPos, yPos, -1, -1));*/
+	vector<int> attackerPosition = this->findDiagonal(xPos, yPos, 1, 1);
+	attackers.push_back( this->at(attackerPosition.at(0), attackerPosition.at(1)));
+	attackerPosition = this->findDiagonal(xPos, yPos, -1, 1);
+	attackers.push_back(this->at(attackerPosition.at(0), attackerPosition.at(1)));
+	attackerPosition = this->findDiagonal(xPos, yPos, 1, -1);
+	attackers.push_back(this->at(attackerPosition.at(0), attackerPosition.at(1)));
+	attackerPosition = this->findDiagonal(xPos, yPos, -1, -1);
+	attackers.push_back(this->at(attackerPosition.at(0), attackerPosition.at(1)));
+	
 
 	for (int k = 0; k < attackers.size(); k++) {
 		ChessPiece attacker = attackers.at(k);
@@ -336,61 +342,9 @@ bool Chessboard::isExposed(int xPos, int yPos) {
 			return true;
 	}
 
-	// these are used to look the spots diagonally from the selected piece
-	int yAdjustor = 1;
-	int xAdjustor = 1;
-	// find the first invalid index or another piece
-	while ((this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) && (board[xPos + xAdjustor][yPos + yAdjustor].isEmpty())) {
-		xAdjustor++; 
-		yAdjustor++; 
-	} 
-	// evaluate the next pieces in diagonal index
-	if (this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) {
-		ChessPiece attacker = board[xPos + xAdjustor][yPos + yAdjustor];
-		if ((attacker.isTeam(enemy)) && (attacker.isBishop() || attacker.isQueen()))
-			return true;
-	}
-
-
-	yAdjustor = -1;
-	xAdjustor = 1;
-	while ((this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) && (board[xPos + xAdjustor][yPos + yAdjustor].isEmpty())) {
-		xAdjustor++;
-		yAdjustor--;
-	}
-	if (this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) {
-		ChessPiece attacker = board[xPos + xAdjustor][yPos + yAdjustor];
-		if ((attacker.isTeam(enemy)) && (attacker.isBishop() || attacker.isQueen()))
-			return true;
-	}
-
-
-	yAdjustor = 1;
-	xAdjustor = -1;
-	while ((this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) && (board[xPos + xAdjustor][yPos + yAdjustor].isEmpty())) {
-		xAdjustor--;
-		yAdjustor++;
-	}
-	if (this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) {
-		ChessPiece attacker = board[xPos + xAdjustor][yPos + yAdjustor];
-		if ((attacker.isTeam(enemy)) && (attacker.isBishop() || attacker.isQueen()))
-			return true;
-	}
-
-	yAdjustor = -1;
-	xAdjustor = -1;
-	while ((this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) && (board[xPos + xAdjustor][yPos + yAdjustor].isEmpty())) {
-		xAdjustor--;
-		yAdjustor--;
-	}
-	if (isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) {
-		ChessPiece attacker = board[xPos + xAdjustor][yPos + yAdjustor];
-		if ((attacker.isTeam(enemy)) && (attacker.isBishop() || attacker.isQueen()))
-			return true;
-	}
 
 	// queen was checked when we were looking for rooks and queens
-
+	// no enemy pieces can move to the spot our piece is in so return false
 	return false;
 
 }
@@ -407,33 +361,40 @@ vector<int> Chessboard::findDiagonal(int xPos, int yPos, int xDir, int yDir) con
 	return { xPos + xAdjustor, yPos + yAdjustor };
 }
 
-
+// check for checkmate on current board. Looks to see if current player has any options
+// so if turn is white then it checks if white king is in check mate
 bool Chessboard::checkmate() {
 
+	// holds positions of king
 	int kingX = -1, kingY = -1;
 
+	// finds king and sets kingX and kingY
 	for (int row = 0; row < 7; row++) {
 		for (int col = 0; col < 7; col++) {
 			ChessPiece spot;
 			if (spot.isKing() && spot.isTeam(this->getTurn())) {
 				kingX = col;
 				kingY = row;
+				break;
 			}
 		}
 	}
 
-	
+	// checks to see if he's exposed on current spot
 	if (!this->isExposed(kingX, kingY))
 		return false;
 
+	// checks all adjacent spots to see if he can move there and be safe
 	for (int row = -1; row <= 1; row++) {
 		for (int col = -1; row <= 1; row++) {
+			// if he can move to that spot and isn't exposed on that spot, return false
 			if (this->isAllowedToMove(kingX, kingY, kingX+col, kingY+row) && !isExposed(kingX, kingY)) {
 				return false;
 			}
 		}
 	}
 
+	// king has no more options return true
 	return true;
 }
 
