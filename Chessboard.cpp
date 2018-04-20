@@ -520,44 +520,45 @@ void Chessboard::loadGame(string filename) {
 	bool Chessboard::isAllowedToMove(int location_x, int location_y, int destination_x, int destination_y) const{
         //TODO:: FINISH FUNCTION
         if ((location_x == destination_x) && (location_y == destination_y)) {
-			cout << "invalid index" << endl;
 			return false;
         }
-        else if(board[location_y][location_x].team() == board[destination_y][destination_x].team()){
+        else if(board[location_x][location_y].team() == board[destination_y][destination_x].team()){
         	return false;
         }
         else if(!isValidIndex(location_x, location_y) && !isValidIndex(destination_x, destination_y)){
         	return false; 
         }
-        else if (board[location_y][location_x].type() == "king"){
+        else if (board[location_x][location_y].isKing()){
         	if (canMoveKing(location_x, location_y, destination_x, destination_y)){
         		return true;
         	}
         }
-        else if (board[location_y][location_x].type() == "queen"){
+        else if (board[location_x][location_y].isQueen()){
         	if (canMoveQueen(location_x, location_y, destination_x, destination_y)){
         		return true;
         	}
         }
-        else if (board[location_y][location_x].type() == "bishop"){
+        else if (board[location_x][location_y].isBishop()){
         	if (canMoveBishop(location_x, location_y, destination_x, destination_y)){
         		return true;
         	}
         }
-        else if (board[location_y][location_x].type() == "knight"){
+        else if (board[location_x][location_y].isKnight()){
         	if (canMoveKnight(location_x, location_y, destination_x, destination_y)){
         		return true;
         	}
         }
-        else if (board[location_y][location_x].type() == "pawn"){
+        else if (board[location_x][location_y].isPawn()){
         	if (canMovePawn(location_x, location_y, destination_x, destination_y)){
         		return true;
         	}
         }
-        else if (board[location_y][location_x].type() == "rook"){
+        else if (board[location_x][location_y].isRook()){
         	if (canMoveRook(location_x, location_y, destination_x, destination_y)){
+				
         		return true;
        		}
+			
         }	
         return false;
 	}
@@ -579,7 +580,7 @@ void Chessboard::loadGame(string filename) {
     }
     
     bool Chessboard::canMoveQueen(int location_x, int location_y, int destination_x, int destination_y) const{
-    	return false;
+    	
     	if (canMoveRook(location_x, location_y, destination_x, destination_y)||canMoveBishop(location_x, location_y, destination_x, destination_y)){
     		return true;
         }
@@ -656,7 +657,7 @@ void Chessboard::loadGame(string filename) {
 	}
 	
 	bool Chessboard::canMovePawn(int location_x, int location_y, int destination_x, int destination_y) const{
-		if (board[location_y][location_x].team() == "black"){
+		if (board[location_x][location_y].team() == "black"){
 			if (destination_x = location_x+1 && (destination_y == location_y+1 || destination_y == location_y-1)){
 				return true;
 			}
@@ -670,7 +671,7 @@ void Chessboard::loadGame(string filename) {
 				return false;
 			}
 		}
-		else if (board[location_y][location_x].team() == "white"){
+		else if (board[location_x][location_y].team() == "white"){
 			if (destination_x = location_x-1 && (destination_y == location_y+1 || destination_y == location_y-1)){
 				return true;
 			}

@@ -107,7 +107,7 @@ bool ChessPiece::isKnight() const {
 }
 
 bool ChessPiece::isRook() const {
-	if (!strcmpi(piece_type.c_str(), "Rook"))
+	if (!strcmpi(piece_type.c_str(), "rook"))
 		return true;
 	else
 		return false;

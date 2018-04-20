@@ -53,7 +53,15 @@ void testIsAllowedToMove() {
 
 	cout << "0 = " << board.isAllowedToMove(1, 1, 1, 1) << endl;
 	cout << "0 = " << board.isAllowedToMove(1, 2, 2, 2) << endl;
+	cout << "0 = " << board.isAllowedToMove(1, 2, 10, 1) << endl;
 
+	// testing queen
+	cout << "queen" << endl;
+	board.move(0, 3, 3, 3);
+	cout << "0 = " << board.isAllowedToMove(3, 3, 5, 6) << endl;
+	cout << "1 = " << board.isAllowedToMove(3, 3, 5, 5) << endl;
+	cout << "0 = " << board.isAllowedToMove(3, 3, 7, 7) << endl;
+	cout << "1 = " << board.isAllowedToMove(3, 3, 6, 6) << endl;
 
 	board.makeJSONfile("current.json");
 	board.makeJSONfile("test.json");
@@ -77,6 +85,10 @@ void testPiece() {
 	cout << "1 = " << test.isBishop() << endl;
 	test.setType("knight");
 	cout << "1 = " << test.isKnight() << endl;
+	Chessboard x;
+	cout << "1 = " << x.at(0, 0).isRook() << endl;
+	cout << "rook = " << x.at(0, 0).type() << endl;
+	cout << "1 = " << x.at(0, 3).isQueen() << endl;
 }
 
 void testisExposed() {
@@ -155,7 +167,9 @@ Chessboard importGame() {
 }
 
 
-
+// this function asks the user for their next move
+// it ensure the move they enter is valid and then return a 
+// vector that corresponds to the moves to pass into the .move() function
 vector<int> getMoveVec(Chessboard game) {
 	vector<int> moveVec(4, -1);
 	do {
@@ -182,21 +196,24 @@ vector<int> getMoveVec(Chessboard game) {
 			cout << "[1] yes" << endl;
 			cout << "[2] no" << endl;
 			getline(cin, userInput);
+
 			if (strcmp(userInput.c_str(), "1")) {
 				break;
 			} else {
 				// reverse the move by switching the destination and current position
 				game.move(moveVec.at(2), moveVec.at(3), moveVec.at(0), moveVec.at(1));
+				// update JSON file
 				game.makeJSONfile("current.json");
 				continue;
 			}
 		}
+		// there is a break statement to escape loop
 	} while (true);
 
-	// return the vector to give to game.move()
 	return moveVec;
 }
 
+// plays the game of chess
 void playChess(Chessboard game) {
 
 	do {
@@ -206,7 +223,11 @@ void playChess(Chessboard game) {
 
 		cout << "moving piece" << endl;
 		game.move(moveVec);
+
+		// switch the turn
 		game.changeTurn();
+
+		// update the gameboard
 		game.makeJSONfile("current.json");
 
 	} while (!game.checkmate());
@@ -290,6 +311,8 @@ void mainMenu() {
 int main() {
 	
 	
-	mainMenu();
+	testPiece();
+	testIsAllowedToMove();
+
 	return 0;
 }
