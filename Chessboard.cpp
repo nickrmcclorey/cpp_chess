@@ -538,28 +538,60 @@ void Chessboard::loadGame(string filename) {
 
 	bool Chessboard::canMoveRook(int location_x, int location_y, int destination_x, int destination_y) const{
 		if (location_y==destination_y && destination_x<location_x){
-			if (findDiagonal(location_x, location_y, -1, 0)[0]>=destination_x){
-				return false;
+			if (findDiagonal(location_x, location_y, -1, 0)[0]<destination_x){
+				return true;
 			}
 		}
 		else if(location_y==destination_y && destination_x>location_x){
-			if (findDiagonal(location_x, location_y, 1, 0)[0]<=destination_x){
-				return false;
+			if (findDiagonal(location_x, location_y, 1, 0)[0]>destination_x){
+				return true;
 			}
 		}
 		else if(location_x==destination_x && destination_y<location_y){
-			if (findDiagonal(location_x, location_y, 0, -1)[1]>=destination_y){
-				return false;
+			if (findDiagonal(location_x, location_y, 0, -1)[1]<destination_y){
+				return true;
 			}
 		}
 		else if(location_x==destination_x && destination_y>location_y){
-			if (findDiagonal(location_x, location_y, 0, 1)[1]<=destination_y){
-				return false;
+			if (findDiagonal(location_x, location_y, 0, 1)[1]>destination_y){
+				return true;
 			}
 		}
 		else{
-			return true;
+			return false;
 		}
 	}
 
-    
+	bool Chessboard::canMoveBishop(int location_x, int location_y, int destination_x, int destination_y) const{
+		if (abs(location_x-destination_x)==abs(location_y-destination_y)){
+			//First quadrant
+			if (destination_x>location_x && destination_y>location_y){
+				if (findDiagonal(location_x, location_y, 1, 1)[0]>=destination_x && findDiagonal(location_x, location_y, 1, 1)[1]>=destination_y){
+					return true;
+				}
+			}
+			//Second quadrant
+			else if(destination_x<location_y && destination_y>location_y){
+				if (findDiagonal(location_x, location_y, -1, 1)[0]<=destination_x && findDiagonal(location_x, location_y, -1, 1)[1]>=destination_y){
+					return true;
+				}
+			}
+			//Third quadrant
+			else if(destination_x<location_x && destination_y<location_y){
+				if (findDiagonal(location_x, location_y, -1, -1)[0]<=destination_x && findDiagonal(location_x, location_y, -1, -1)[1]<=destination_y){
+					return true;
+				}
+			}
+			//Fourth quadrant
+			else if(destination_x>location_x && destination_y<location_y){
+				if (findDiagonal(location_x, location_y, 1, -1)[0]>=destination_x && findDiagonal(location_x, location_y, -1, 1)[1]<=destination_y){
+					return true;
+				}
+			}	
+		}
+		else{
+			return false;
+		}
+	}
+	
+	
