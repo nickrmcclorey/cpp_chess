@@ -49,7 +49,7 @@ void testPiece() {
 }
 
 void testisExposed() {
-	cout << "Testing is exposed" << endl;
+	/*cout << "Testing is exposed" << endl;
 	Chessboard x;
 
 	x.move(7, 7, 3, 4);
@@ -74,7 +74,7 @@ void testisExposed() {
 	cout << "0 = " << x.isExposed(0, 1) << endl;
 
 	cout << "blackpawn = " << x.at(1, 1).team() << x.at(1, 1).type() << endl;
-	x.makeJSONfile("current.json");
+	x.makeJSONfile("current.json");*/
 }
 
 void testFileIO() {
@@ -147,7 +147,7 @@ vector<int> getMoveVec(Chessboard game) {
 	vector<int> moveVec(4, -1);
 	do {
 		
-		cout << "Enter your move" << endl;
+		cout << "Enter your move. It's currently " << game.getTurn() << endl;
 		cout << "type \"menu\" for more options" << endl;
 
 		string userInput;
@@ -178,17 +178,22 @@ vector<int> getMoveVec(Chessboard game) {
 			}
 		}
 	} while (moveVec.at(0) != -1);
+
+	// return the vector to give to game.move()
 	return moveVec;
 }
 
 void playChess(Chessboard game) {
 
-	// this function will also make sure user enters in a move thats follows the rules of chess
-	vector<int> moveVec = getMoveVec(game);
+	do {
 
-	cout << "moving piece" << endl;
-	game.move(moveVec);
-	game.makeJSONfile("current.json");
+		// this function will also make sure user enters in a move thats follows the rules of chess
+		vector<int> moveVec = getMoveVec(game);
+
+		cout << "moving piece" << endl;
+		game.move(moveVec);
+		game.makeJSONfile("current.json");
+	} while (!game.checkmate());
 
 
 }
