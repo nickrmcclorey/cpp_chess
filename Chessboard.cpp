@@ -533,3 +533,40 @@ void Chessboard::loadGame(string filename) {
         }
     }
     
+    bool Chessboard::canMoveQueen(int location_x, int location_y, int destination_x, int destination_y) const{
+    	return false;
+    	/*if (canMoveRook(location_x, location_y, destination_x, destination_y)||canMoveBishop(location_x, location_y, destination_x, destination_y)){
+    		return true;
+        }
+        else{
+        	return false;
+        }*/
+    }
+
+	bool Chessboard::canMoveRook(int location_x, int location_y, int destination_x, int destination_y) const{
+		if (location_y==destination_y && destination_x<location_x){
+			if (findDiagonal(location_x, location_y, -1, 0)[0]>=destination_x){
+				return false;
+			}
+		}
+		else if(location_y==destination_y && destination_x>location_x){
+			if (findDiagonal(location_x, location_y, 1, 0)[0]<=destination_x){
+				return false;
+			}
+		}
+		else if(location_x==destination_x && destination_y<location_y){
+			if (findDiagonal(location_x, location_y, 0, -1)[1]>=destination_y){
+				return false;
+			}
+		}
+		else if(location_x==destination_x && destination_y>location_y){
+			if (findDiagonal(location_x, location_y, 0, 1)[1]<=destination_y){
+				return false;
+			}
+		}
+		else{
+			return true;
+		}
+	}
+
+    
