@@ -603,9 +603,9 @@ void Chessboard::loadGame(string filename) {
 				return true;
 			}
 		}
-		else{
-			return false;
-		}
+		
+		return false;
+		
 	}
 	
 	

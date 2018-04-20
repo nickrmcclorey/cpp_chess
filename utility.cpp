@@ -67,8 +67,11 @@ vector<int> moveFromUserString(string raw) {
 	
 	vector<int> toReturn(4,-1);
 	vector<int> empty (4, -1);
-	if (raw.size() % 2 != 0 || raw.size() > 6 || (raw.size() > 2 && raw.size() < 6) || raw.size() < 2)
+	if (raw.size() != 6) {
+		cout << raw << " is " << raw.size() << " long" << endl;
 		return toReturn;
+	}
+
 
 	// selecting needed characters while ignoring expresions like "to"
 	string refined;
