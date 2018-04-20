@@ -12,16 +12,19 @@ private:
 	
 	string piece_type;
 	string team_on; // strange name is so the getter can be named team()
+	bool has_moved;
 
 public:
 	// getters
 	string team() const;
 	string type() const;
+	bool hasMoved() const;
 
 	// setters
 	void setTeam(string);
 	void setType(string);
-
+	void moved();
+	
 	// utility
 	string JSON_text(int yPos, int xPos) const;
 	bool isEmpty() const;

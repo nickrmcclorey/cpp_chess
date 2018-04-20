@@ -531,12 +531,12 @@ void Chessboard::loadGame(string filename) {
     
     bool Chessboard::canMoveQueen(int location_x, int location_y, int destination_x, int destination_y) const{
     	return false;
-    	/*if (canMoveRook(location_x, location_y, destination_x, destination_y)||canMoveBishop(location_x, location_y, destination_x, destination_y)){
+    	if (canMoveRook(location_x, location_y, destination_x, destination_y)||canMoveBishop(location_x, location_y, destination_x, destination_y)){
     		return true;
         }
         else{
         	return false;
-        }*/
+        }
     }
 
 	bool Chessboard::canMoveRook(int location_x, int location_y, int destination_x, int destination_y) const{
@@ -591,6 +591,17 @@ void Chessboard::loadGame(string filename) {
 					return true;
 				}
 			}	
+		}
+		else{
+			return false;
+		}
+	}
+	
+	bool Chessboard::canMoveKnight(int location_x, int location_y, int destination_x, int destination_y) const{
+		if (location_x!=destination_x && location_y!=destination_y){
+			if ((abs(location_x-destination_x)+abs(location_y-destination_y==3))){
+				return true;
+			}
 		}
 		else{
 			return false;

@@ -13,6 +13,7 @@ using namespace std;
 ChessPiece::ChessPiece(){
 	team_on = "No team";
 	piece_type = "empty"; 
+	has_moved = false;
 }
 
 // constructor setting the team and type
@@ -124,4 +125,12 @@ bool ChessPiece::isTeam(string team1) const {
 		return true;
 	else
 		return false;
+}
+
+bool ChessPiece::hasMoved() const{
+	return has_moved;
+}
+
+void ChessPiece::moved(){
+	has_moved = true;
 }
