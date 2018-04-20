@@ -512,9 +512,14 @@ void Chessboard::loadGame(string filename) {
         //TODO:: FINISH FUNCTION
         if ((location_x == destination_x) && (location_y == destination_y)) {
 			cout << "invalid index" << endl;
-			exit(0);
+			return false;
         }
-        
+        else if(board[location_y][location_x].team() == board[destination_y][destination_x].team()){
+        	return false;
+        }
+        else if(!isValidIndex(location_x, location_y) && !isValidIndex(destination_x, destination_y)){
+        	return false; 
+        }
         return true;
     }
     
