@@ -125,6 +125,13 @@ void Chessboard::turn_AI_off() {
 	AI_playing = false;
 }
 
+string Chessboard::get_AI_team() const {
+	return this->AI_team;
+}
+void Chessboard::set_AI_team(string team) {
+	this->AI_team = team;
+}
+
 // changes the turn
 void Chessboard::changeTurn() {
 	turn = (strcmp("white", turn.c_str())) ? "black" : "white";

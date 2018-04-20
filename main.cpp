@@ -143,9 +143,10 @@ Chessboard importGame() {
 
 
 
-vector<int> getMoveVec(const Chessboard &game) {
+vector<int> getMoveVec(Chessboard game) {
 	vector<int> moveVec(4, -1);
 	do {
+		
 		cout << "Enter your move" << endl;
 		cout << "type \"menu\" for more options" << endl;
 
@@ -158,20 +159,37 @@ vector<int> getMoveVec(const Chessboard &game) {
 			continue;
 		}
 		else {
-			break;
+			// move the piece and update the json file
+			game.move(moveVec);
+			game.makeJSONfile("current.json");
+
+			// ask if they are sure about the move
+			cout << "Board has been updated\nAre you sure this is you move?" << endl;
+			cout << "[1] yes" << endl;
+			cout << "[2] no" << endl;
+			getline(cin, userInput);
+			if (strcmp(userInput.c_str(), "1")) {
+				break;
+			} else {
+				// reverse the move by switching the destination and current position
+				game.move(moveVec.at(2), moveVec.at(3), moveVec.at(0), moveVec.at(1));
+				game.makeJSONfile("current.json");
+				continue;
+			}
 		}
 	} while (moveVec.at(0) != -1);
+	return moveVec;
 }
 
 void playChess(Chessboard game) {
 
-
+	// this function will also make sure user enters in a move thats follows the rules of chess
 	vector<int> moveVec = getMoveVec(game);
 
 	cout << "moving piece" << endl;
 	game.move(moveVec);
+	game.makeJSONfile("current.json");
 
-	
 
 }
 
@@ -230,6 +248,15 @@ void mainMenu() {
 			}
 			else if (option == 2) {
 				game.turn_AI_on();
+				cout << "What team are you on?" << endl;
+				getline(cin, userChoice);
+				while (strcmp(userChoice.c_str(), "white") || strcmp(userChoice.c_str(), "black")) {
+					cout << "That's not a team" << endl;
+					cout << "What team are you on?" << endl;
+					getline(cin, userChoice);
+				}
+
+				game.set_AI_team(userChoice);
 			}
 		}
 
