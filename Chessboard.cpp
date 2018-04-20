@@ -229,8 +229,6 @@ bool Chessboard::isValidIndex(const int &x, const int &y) const {
 
 // checks to see if a piece is vulnerable to being hit
 bool Chessboard::isExposed(int xPos, int yPos) {
-	
-
 	if (this->at(xPos, yPos).isEmpty()) {
 		return false;
 	}
@@ -602,9 +600,7 @@ void Chessboard::loadGame(string filename) {
 				}
 			}	
 		}
-		else{
-			return false;
-		}
+		return false;
 	}
 	
 	bool Chessboard::canMoveKnight(int location_x, int location_y, int destination_x, int destination_y) const{
