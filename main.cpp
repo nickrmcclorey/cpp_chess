@@ -23,7 +23,7 @@ void testBoard() {
 	x.makeJSONfile("current.json");
 	
 	x.move(6, 7, 3, 4);
-	cout << "1 = " << x.isExposed(4, 1) << endl;
+	cout << "1 = " << x.isExposed(4, 1, x.at(3,4).team()) << endl;
 	cout << "through" << endl;
 }
 
@@ -34,22 +34,26 @@ void testIsAllowedToMove() {
 	
 	// testing knight
 	cout << "knight" << endl;
-	cout << "1 = " << board.canMoveKnight(0, 1, 2, 2) << endl;
-	cout << "0 = " << board.canMoveKnight(0, 1, 2, 1) << endl;
-	cout << "0 = " << board.canMoveKnight(0, 1, 3, 1) << endl;
+	cout << "1 = " << board.isAllowedToMove(0, 1, 2, 2) << endl;
+	cout << "0 = " << board.isAllowedToMove(0, 1, 2, 1) << endl;
+	cout << "0 = " << board.isAllowedToMove(0, 1, 3, 1) << endl;
 	
 	// testing bishop
 	board.move(0, 2, 2, 2);
 	cout << "bishop" << endl;
-	cout << "0 = " << board.canMoveBishop(2, 2, 4, 3) << endl;
-	cout << "1 = " << board.canMoveBishop(2, 2, 6, 6) << endl;
-	cout << "1 = " << board.canMoveBishop(2, 2, 4, 4) << endl;
+	cout << "0 = " << board.isAllowedToMove(2, 2, 4, 3) << endl;
+	cout << "1 = " << board.isAllowedToMove(2, 2, 6, 6) << endl;
+	cout << "1 = " << board.isAllowedToMove(2, 2, 4, 4) << endl;
 
 	// testing rook
 	cout << "rook" << endl;
-	cout << "0 = " << board.canMoveRook(0, 7, 2, 7) << endl;
+	cout << "0 = " << board.isAllowedToMove(0, 7, 2, 7) << endl;
 	board.move(0, 7, 2, 7);
-	cout << "1 = " << board.canMoveRook(2, 7, 6, 7);
+	cout << "1 = " << board.isAllowedToMove(2, 7, 6, 7) << endl;
+
+	cout << "0 = " << board.isAllowedToMove(1, 1, 1, 1) << endl;
+	cout << "0 = " << board.isAllowedToMove(1, 2, 2, 2) << endl;
+
 
 	board.makeJSONfile("current.json");
 	board.makeJSONfile("test.json");
@@ -164,9 +168,9 @@ vector<int> getMoveVec(Chessboard game) {
 
 		moveVec = moveFromUserString(userInput);
 		cout << moveVec.at(0) << moveVec.at(1) << moveVec.at(2) << moveVec.at(3) << endl;
-		//if (moveVec.at(0) == -1 || (!game.isAllowedToMove(moveVec.at(0), moveVec.at(1), moveVec.at(2), moveVec.at(3)))) {
-		if (false) {
-		cout << "That isn't a valid move" << endl;
+		if (moveVec.at(0) == -1 || (!game.isAllowedToMove(moveVec.at(0), moveVec.at(1), moveVec.at(2), moveVec.at(3)))) {
+		
+			cout << "That isn't a valid move" << endl;
 			continue;
 		} else {
 			// move the piece and update the json file
@@ -174,7 +178,7 @@ vector<int> getMoveVec(Chessboard game) {
 			game.makeJSONfile("current.json");
 
 			// ask if they are sure about the move
-			cout << "Board has been updated\nAre you sure this is you move?" << endl;
+			cout << "Board has been updated\nAre you sure this is your move?" << endl;
 			cout << "[1] yes" << endl;
 			cout << "[2] no" << endl;
 			getline(cin, userInput);
@@ -187,7 +191,7 @@ vector<int> getMoveVec(Chessboard game) {
 				continue;
 			}
 		}
-	} while (moveVec.at(0) != -1);
+	} while (true);
 
 	// return the vector to give to game.move()
 	return moveVec;
@@ -202,7 +206,9 @@ void playChess(Chessboard game) {
 
 		cout << "moving piece" << endl;
 		game.move(moveVec);
+		game.changeTurn();
 		game.makeJSONfile("current.json");
+
 	} while (!game.checkmate());
 
 	cout << "Game Over" << endl << game.getTurn() << " lost" << endl;

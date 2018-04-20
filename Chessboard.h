@@ -50,7 +50,7 @@ public:
 	void move(vector<int> moveSet); // same as function above but ints are in vector
 	ChessPiece at(int x, int y); // could use to index board
 	void displayBoard() const; // used to display board for debugging
-	bool isExposed(int xPos, int yPos);
+	bool isExposed(int xPos, int yPos, string);
 	bool isValidIndex(const int &x, const int &y) const;
 	vector<int> findDiagonal(int, int, int, int) const;
 	void makeJSONfile(string) const;

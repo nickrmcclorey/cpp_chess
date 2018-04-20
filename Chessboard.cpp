@@ -134,7 +134,7 @@ void Chessboard::set_AI_team(string team) {
 
 // changes the turn
 void Chessboard::changeTurn() {
-	turn = (strcmp("white", turn.c_str())) ? "black" : "white";
+	turn = (!strcmp("white", turn.c_str())) ? "black" : "white";
 }
 
 
@@ -228,127 +228,137 @@ bool Chessboard::isValidIndex(const int &x, const int &y) const {
 }
 
 // checks to see if a piece is vulnerable to being hit
-bool Chessboard::isExposed(int xPos, int yPos) {
-	if (this->at(xPos, yPos).isEmpty()) {
-		return false;
-	}
+bool Chessboard::isExposed(int xPos, int yPos, string friendly) {
 
-	//ChessPiece candidate = this->at(xPos, yPos);
-	string enemy = (!strcmp(this->getTurn().c_str(), "black")) ? "white" : "black";
-	
-	// looking for nearby kings and pawns
-	for (int row = -1; row <= 1 ; row++) {
-		for (int col = -1; col <= 1; col++) {
-			if (!isValidIndex(xPos + row, yPos + col))
-				continue;
+	string enemy = (!strcmp(friendly.c_str(), "black")) ? "white" : "black";
 
-			ChessPiece temp = this->at(xPos + row, yPos + col);	
-			if ((temp.isKing()) && temp.isTeam(enemy))
+	for (int col = 0; col < 8; col++) {
+		for (int row = 0; row < 8; row++) {
+			if (board[col][row].isTeam(enemy) && this->isAllowedToMove(col, row, xPos, yPos))
 				return true;
 		}
+		return false;
 	}
-	
+	//if (this->at(xPos, yPos).isEmpty()) {
+	//	return false;
+	//}
 
-	// looking for knights
-	if (this->isValidIndex(xPos + 1, yPos + 2) && this->at(xPos + 1, yPos + 2).isKnight()) {
-		return true;
-	} else if (this->isValidIndex(xPos - 1, yPos + 2) && this->at(xPos - 1, yPos + 2).isKnight()) {
-		return true;
-	} else if (this->isValidIndex(xPos + 1, yPos - 2 ) && this->at(xPos + 1, yPos - 2).isKnight()) {
-		return true;
-	} else if (this->isValidIndex(xPos - 1, yPos - 2) && this->at(xPos - 1, yPos - 2).isKnight()) {
-		return true;
-	} else if (this->isValidIndex(xPos + 2, yPos + 1) && this->at(xPos + 2, yPos + 1).isKnight()) {
-		return true;
-	} else if (this->isValidIndex(xPos - 2, yPos + 1) && this->at(xPos - 2, yPos + 1).isKnight()) {
-		return true;
-	} else if (this->isValidIndex(xPos + 2, yPos - 1) && this->at(xPos + 2, yPos - 1).isKnight()) {
-		return true;
-	} else if (this->isValidIndex(xPos - 2, yPos - 1) && this->at(xPos - 2, yPos - 1).isKnight()) {
-		return true;
-	}
+	////ChessPiece candidate = this->at(xPos, yPos);
+	//string enemy = (!strcmp(friendly.c_str(), "black")) ? "white" : "black";
+	//
+	//// looking for nearby kings and pawns
+	//for (int row = -1; row <= 1 ; row++) {
+	//	for (int col = -1; col <= 1; col++) {
+	//		if (!isValidIndex(xPos + row, yPos + col))
+	//			continue;
 
-	//return false; // rest of function isn't finished
-	//TODO: finish logic below
+	//		ChessPiece temp = this->at(xPos + row, yPos + col);	
+	//		if ((temp.isKing()) && temp.isTeam(enemy))
+	//			return true;
+	//	}
+	//}
+	//
 
-	// === looking for rooks === \\
+	//// looking for knights
+	//if (this->isValidIndex(xPos + 1, yPos + 2) && this->at(xPos + 1, yPos + 2).isKnight()) {
+	//	return true;
+	//} else if (this->isValidIndex(xPos - 1, yPos + 2) && this->at(xPos - 1, yPos + 2).isKnight()) {
+	//	return true;
+	//} else if (this->isValidIndex(xPos + 1, yPos - 2 ) && this->at(xPos + 1, yPos - 2).isKnight()) {
+	//	return true;
+	//} else if (this->isValidIndex(xPos - 1, yPos - 2) && this->at(xPos - 1, yPos - 2).isKnight()) {
+	//	return true;
+	//} else if (this->isValidIndex(xPos + 2, yPos + 1) && this->at(xPos + 2, yPos + 1).isKnight()) {
+	//	return true;
+	//} else if (this->isValidIndex(xPos - 2, yPos + 1) && this->at(xPos - 2, yPos + 1).isKnight()) {
+	//	return true;
+	//} else if (this->isValidIndex(xPos + 2, yPos - 1) && this->at(xPos + 2, yPos - 1).isKnight()) {
+	//	return true;
+	//} else if (this->isValidIndex(xPos - 2, yPos - 1) && this->at(xPos - 2, yPos - 1).isKnight()) {
+	//	return true;
+	//}
 
-	// going horizontal
-	int adjustor = 1;
-	// while valid index and haven't run into teammate
-	while ((this->isValidIndex(xPos + adjustor, yPos)) && (board[xPos + adjustor][yPos].isEmpty())) {
-		adjustor++;
-	}
-	// found invalid index or next piece in path. if this piece is a rook or queen
-	if (this->isValidIndex(xPos + adjustor, yPos)) {
-		ChessPiece attacker = board[xPos + adjustor][yPos];
-		if ((attacker.isTeam(enemy)) && (attacker.isQueen() || attacker.isRook()))
-			return true;
-	}
+	////return false; // rest of function isn't finished
+	////TODO: finish logic below
 
+	//// === looking for rooks === \\
 
-
-	adjustor = -1;
-	// while valid index and haven't run into teammate
-	while ((this->isValidIndex(xPos + adjustor, yPos)) && (board[xPos + adjustor][yPos].isEmpty())) {
-		adjustor--;
-	}
-	if (this->isValidIndex(xPos + adjustor, yPos)) {
-		ChessPiece attacker = board[xPos + adjustor][yPos];
-		if ((attacker.isTeam(enemy)) && (attacker.isQueen() || attacker.isRook()))
-			return true;
-	}
-    
-
-	// adjusting y position
-	adjustor = 1;
-	while ((this->isValidIndex(xPos, yPos + adjustor)) && (board[xPos][yPos + adjustor].isEmpty())) {
-		adjustor++;
-	}
-	if (this->isValidIndex(xPos, yPos + adjustor)) {
-		ChessPiece attacker = board[xPos][yPos + adjustor];
-		if ((attacker.isTeam(enemy)) && (attacker.isQueen() || attacker.isRook()))
-			return true;
-	}
+	//// going horizontal
+	//int adjustor = 1;
+	//// while valid index and haven't run into teammate
+	//while ((this->isValidIndex(xPos + adjustor, yPos)) && (board[xPos + adjustor][yPos].isEmpty())) {
+	//	adjustor++;
+	//}
+	//// found invalid index or next piece in path. if this piece is a rook or queen
+	//if (this->isValidIndex(xPos + adjustor, yPos)) {
+	//	ChessPiece attacker = board[xPos + adjustor][yPos];
+	//	if ((attacker.isTeam(enemy)) && (attacker.isQueen() || attacker.isRook()))
+	//		return true;
+	//}
 
 
 
-	adjustor = -1;
-	while ((this->isValidIndex(xPos, yPos + adjustor)) && (board[xPos][yPos + adjustor].isEmpty())) {
-		adjustor--;
-	}
-	if (this->isValidIndex(xPos, yPos + adjustor)) {
-		ChessPiece attacker = board[xPos][yPos + adjustor];
-		if ((attacker.isTeam(enemy)) && (attacker.isQueen() || attacker.isRook()))
-			return true;
-	}
+	//adjustor = -1;
+	//// while valid index and haven't run into teammate
+	//while ((this->isValidIndex(xPos + adjustor, yPos)) && (board[xPos + adjustor][yPos].isEmpty())) {
+	//	adjustor--;
+	//}
+	//if (this->isValidIndex(xPos + adjustor, yPos)) {
+	//	ChessPiece attacker = board[xPos + adjustor][yPos];
+	//	if ((attacker.isTeam(enemy)) && (attacker.isQueen() || attacker.isRook()))
+	//		return true;
+	//}
+ //   
 
-	
-	// === looking for bishops === \\
-	
-
-	// get all the pieces looking in the diagonal direction
-	vector <ChessPiece> attackers;
-	vector<int> attackerPosition = this->findDiagonal(xPos, yPos, 1, 1);
-	attackers.push_back( this->at(attackerPosition.at(0), attackerPosition.at(1)));
-	attackerPosition = this->findDiagonal(xPos, yPos, -1, 1);
-	attackers.push_back(this->at(attackerPosition.at(0), attackerPosition.at(1)));
-	attackerPosition = this->findDiagonal(xPos, yPos, 1, -1);
-	attackers.push_back(this->at(attackerPosition.at(0), attackerPosition.at(1)));
-	attackerPosition = this->findDiagonal(xPos, yPos, -1, -1);
-	attackers.push_back(this->at(attackerPosition.at(0), attackerPosition.at(1)));
-	
-	// checking to see if any of the visable diagonal pieces are enemy bishops or queens
-	for (int k = 0; k < attackers.size(); k++) {
-		ChessPiece attacker = attackers.at(k);
-		if ((attacker.isTeam(enemy)) && (attacker.isBishop() || attacker.isQueen()))
-			return true;
-	}
+	//// adjusting y position
+	//adjustor = 1;
+	//while ((this->isValidIndex(xPos, yPos + adjustor)) && (board[xPos][yPos + adjustor].isEmpty())) {
+	//	adjustor++;
+	//}
+	//if (this->isValidIndex(xPos, yPos + adjustor)) {
+	//	ChessPiece attacker = board[xPos][yPos + adjustor];
+	//	if ((attacker.isTeam(enemy)) && (attacker.isQueen() || attacker.isRook()))
+	//		return true;
+	//}
 
 
-	// queen was checked when we were looking for rooks and queens
-	// no enemy pieces can move to the spot our piece is in so return false
-	return false;
+
+	//adjustor = -1;
+	//while ((this->isValidIndex(xPos, yPos + adjustor)) && (board[xPos][yPos + adjustor].isEmpty())) {
+	//	adjustor--;
+	//}
+	//if (this->isValidIndex(xPos, yPos + adjustor)) {
+	//	ChessPiece attacker = board[xPos][yPos + adjustor];
+	//	if ((attacker.isTeam(enemy)) && (attacker.isQueen() || attacker.isRook()))
+	//		return true;
+	//}
+
+	//
+	//// === looking for bishops === \\
+	//
+
+	//// get all the pieces looking in the diagonal direction
+	//vector <ChessPiece> attackers;
+	//vector<int> attackerPosition = this->findDiagonal(xPos, yPos, 1, 1);
+	//attackers.push_back( this->at(attackerPosition.at(0), attackerPosition.at(1)));
+	//attackerPosition = this->findDiagonal(xPos, yPos, -1, 1);
+	//attackers.push_back(this->at(attackerPosition.at(0), attackerPosition.at(1)));
+	//attackerPosition = this->findDiagonal(xPos, yPos, 1, -1);
+	//attackers.push_back(this->at(attackerPosition.at(0), attackerPosition.at(1)));
+	//attackerPosition = this->findDiagonal(xPos, yPos, -1, -1);
+	//attackers.push_back(this->at(attackerPosition.at(0), attackerPosition.at(1)));
+	//
+	//// checking to see if any of the visable diagonal pieces are enemy bishops or queens
+	//for (int k = 0; k < attackers.size(); k++) {
+	//	ChessPiece attacker = attackers.at(k);
+	//	if ((attacker.isTeam(enemy)) && (attacker.isBishop() || attacker.isQueen()))
+	//		return true;
+	//}
+
+
+	//// queen was checked when we were looking for rooks and queens
+	//// no enemy pieces can move to the spot our piece is in so return false
+	//return false;
 
 }
  
@@ -383,15 +393,16 @@ bool Chessboard::checkmate() {
 		}
 	}
 
+	ChessPiece king = board[kingX][kingY];
 	// checks to see if he's exposed on current spot
-	if (!this->isExposed(kingX, kingY))
+	if (!this->isExposed(kingX, kingY, king.team()))
 		return false;
 
 	// checks all adjacent spots to see if he can move there and be safe
 	for (int row = -1; row <= 1; row++) {
 		for (int col = -1; row <= 1; row++) {
 			// if he can move to that spot and isn't exposed on that spot, return false
-			if (this->isAllowedToMove(kingX, kingY, kingX+col, kingY+row) && !isExposed(kingX, kingY)) {
+			if (this->isAllowedToMove(kingX, kingY, kingX+col, kingY+row) && !isExposed(kingX, kingY, king.team())) {
 				return false;
 			}
 		}
