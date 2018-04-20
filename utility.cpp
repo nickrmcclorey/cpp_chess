@@ -4,6 +4,7 @@
 #include <string>
 #include <cstring>
 #include <stdio.h>
+#include <fstream>
 #include <sstream>
 #include "utility.h"
 
@@ -119,5 +120,48 @@ vector<int> moveFromUserString(string raw) {
 	
 	return toReturn;
 
+}
 
+vector<string> getGameNames() {
+	cout << "Entered getGameNames" << endl;
+	// contains names of all the saved games
+	ifstream infile;
+	
+	infile.open("saved_games\\game_names.txt");
+
+	// check to make sure file opened
+	if (!infile.is_open()) {
+		cout << "failed to find names of games." << endl;
+		exit(0);
+	}
+
+	// temporarily holds each game name
+	string wholeLine;
+	// holds the names for all the games
+	vector<string> gameNames;
+	while (!infile.eof()) {
+		// get each game name and...
+		getline(infile, wholeLine);
+		// ... put it in the gameNames vector
+		gameNames.push_back(wholeLine);
+	}
+	infile.close();
+	return gameNames;
+}
+
+void appendToGameNames(string toAppend) {
+	vector<string> gameNames = getGameNames();
+	gameNames.push_back(toAppend);
+	
+	ofstream outfile;
+	outfile.open("saved_games\\game_names.txt");
+
+	if (!outfile.is_open()) {
+		cout << "faled to open file" << endl;
+		exit(0);
+	}
+
+	for (int k = 0; k < gameNames.size(); k++) {
+		outfile << gameNames.at(k) << endl;
+	}
 }

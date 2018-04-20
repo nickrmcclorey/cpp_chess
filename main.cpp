@@ -31,10 +31,26 @@ void testBoard() {
 void testIsAllowedToMove() {
 	cout << "testing isAllowedToMove functionn" << endl;
 	Chessboard board;
-	board.makeJSONfile("current.json");
+	
 	// testing knight
 	cout << "1 = " << board.isAllowedToMove(0, 1, 2, 2) << endl;
 	cout << "0 = " << board.isAllowedToMove(0, 1, 2, 1) << endl;
+	
+	// testing bishop
+	board.move(0, 2, 2, 2);
+	cout << "bishop" << endl;
+	cout << "0 = " << board.canMoveBishop(2, 2, 4, 3) << endl;
+	cout << "1 = " << board.canMoveBishop(2, 2, 6, 6) << endl;
+	cout << "1 = " << board.canMoveBishop(2, 2, 4, 4) << endl;
+
+	// testing rook
+	cout << "rook" << endl;
+	cout << "0 = " << board.canMoveRook(0, 7, 2, 7) << endl;
+	board.move(0, 7, 2, 7);
+	cout << "1 = " << board.canMoveRook(2, 7, 6, 7);
+
+	board.makeJSONfile("current.json");
+	board.makeJSONfile("test.json");
 }
 
 void testJSON() {
@@ -99,34 +115,15 @@ void testFileIO() {
 
 
 Chessboard importGame() {
-	// contains names of all the saved games
-	ifstream infile;
-	infile.open("game_names.txt");
-
-	// check to make sure file opened
-	if (!infile.is_open()) {
-		cout << "failed to find names of games." << endl;
-		exit(0);
-	}
-
-	// temporarily holds each game name
-	string wholeLine;
-	// holds the names for all the games
-	vector<string> gameNames;
-	while (!infile.eof()) {
-		// get each game name and...
-		getline(infile, wholeLine);
-		// ... put it in the gameNames vector
-		gameNames.push_back(wholeLine);
-	}
-
+	
+	vector<string> gameNames = getGameNames();
 	// holds the index in gameNames that corresponds to the game the user wants to open
 	int gameIndex = 0;
-	while (gameIndex > gameNames.size()) {
+	while (true) {
 		// display current options and prompt for choice
 		cout << "What game would you like to resume?" << endl;
 		for (int k = 0; k < gameNames.size(); k++) {
-			cout << "[" << ++k << "] " << gameNames.at(k) << endl;
+			cout << "[" << k + 1 << "] " << gameNames.at(k) << endl;
 		}
 		
 		// we need this because getline returns a string
@@ -143,8 +140,8 @@ Chessboard importGame() {
 			break;
 	}
 	
-	// load game with chessboard object passed in as parameter
-	Chessboard importedGame(gameNames.at(gameIndex));
+	// use Chessboard constructor to create board with data from json file
+	Chessboard importedGame(gameNames.at(gameIndex-1));
 	// return game with loaded data
 	return importedGame;
 
@@ -279,9 +276,8 @@ void mainMenu() {
 }
 
 int main() {
-
-	testIsAllowedToMove();
-	return 0;
+	
+	Chessboard x = importGame();
 	testFileIO();
 	testisExposed();
 
