@@ -604,3 +604,5 @@ void Chessboard::loadGame(string filename) {
 			return false;
 		}
 	}
+	
+	
