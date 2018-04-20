@@ -54,6 +54,7 @@ public:
 	bool isValidIndex(const int &x, const int &y) const;
 	vector<int> findDiagonal(int, int, int, int) const;
 	void makeJSONfile(string) const;
+	void makeJSONfile() const;
 	vector<ChessPiece> allPieces() const;
 	void changeTurn();
 

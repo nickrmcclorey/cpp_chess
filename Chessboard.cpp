@@ -214,6 +214,11 @@ void Chessboard::makeJSONfile(string filename) const {
 
 }
 
+void Chessboard::makeJSONfile() const {
+	this->makeJSONfile("current.json");
+}
+
+
 bool Chessboard::isValidIndex(const int &x, const int &y) const {
 	if ((x > 7) || (x < 0) || (y > 7) || (y < 0))
 		return false;
@@ -603,9 +608,40 @@ void Chessboard::loadGame(string filename) {
 				return true;
 			}
 		}
-		
+
 		return false;
-		
+
 	}
 	
-	
+	bool Chessboard::canMovePawn(int location_x, int location_y, int destination_x, int destination_y) const{
+		if (board[location_y][location_x].team() == "black"){
+			if (destination_x = location_x+1 && (destination_y == location_y+1 || destination_y == location_y-1)){
+				return true;
+			}
+			else if(destination_x == location_x+1 && destination_y == location_y){
+				return true;
+			}
+			else if(destination_x == location_x+2 && destination_y == location_y && !board[location_y][location_x].hasMoved()){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else if (board[location_y][location_x].team() == "white"){
+			if (destination_x = location_x-1 && (destination_y == location_y+1 || destination_y == location_y-1)){
+				return true;
+			}
+			else if(destination_x == location_x-1 && destination_y == location_y){
+				return true;
+			}
+			else if(destination_x == location_x-2 && destination_y == location_y && !board[location_y][location_x].hasMoved()){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		
+		return false;
+	}

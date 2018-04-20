@@ -85,12 +85,12 @@ vector<int> moveFromUserString(string raw) {
 	for (int k = 0; k < 2; k++) {
 		
 		// if character is a valid number then...
-		if (refined.at(k) > '0' && refined.at(k) < '8')
+		if (refined.at(k) > '0' && refined.at(k) <= '8')
 			// put its numeric value in the return array
-			toReturn.at(0) = stoi(refined.at(k));
+			toReturn.at(1) = stoi(refined.at(k)) - 1;
 		// if character is a letter
 		else if (refined.at(k) >= 'a' && refined.at(k) <= 'h')
-			toReturn.at(1) = refined.at(k) - 'a';
+			toReturn.at(0) = refined.at(k) - 'a';
 		else
 			return empty;
 
@@ -100,20 +100,14 @@ vector<int> moveFromUserString(string raw) {
 	for (int k = 2; k < 4; k++) {
 		
 		if (refined.at(k) > '0' && refined.at(k) <= '8')
-			toReturn.at(2) = stoi(refined.at(k)) - 1;
+			toReturn.at(3) = stoi(refined.at(k)) - 1;
 		else if (refined.at(k) >= 'a' && refined.at(k) <= 'h')
-			toReturn.at(3) = refined.at(k) - 'a';
+			toReturn.at(2) = refined.at(k) - 'a';
 		else
 			return empty;
 
 	}
 
-	/*cout << "[";
-	for (int k = 0; k < 4; k++) {
-		cout << toReturn.at(k) << " ";
-	}
-	cout << "]" << endl;
-	cout << refined << endl;*/
 
 	// make sure all spots have been filled
 	for (int k = 0; k < toReturn.size(); k++) {

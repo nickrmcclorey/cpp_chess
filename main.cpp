@@ -103,14 +103,15 @@ void testisExposed() {
 	cout << "blackpawn = " << x.at(1, 1).team() << x.at(1, 1).type() << endl;
 	x.makeJSONfile("current.json");*/
 }
-
+Chessboard importGame();
 void testFileIO() {
 	Chessboard original;
 	original.move(0, 0, 3, 5);
 	original.makeJSONfile("testImportExport.json");
 	original.makeJSONfile("current");
 
-	Chessboard importedBoard("testImportExport.json");
+	Chessboard importedBoard;
+	importedBoard = importGame();
 	cout << original.at(3, 5).team() << original.at(3, 5).type() << " = " << importedBoard.at(3, 5).team() << importedBoard.at(3, 5).type() << endl;
 
 }
@@ -282,14 +283,7 @@ void mainMenu() {
 
 int main() {
 	
+	
 	mainMenu();
-	return 0;
-
-
-	Chessboard x = importGame();
-	testFileIO();
-	testisExposed();
-
-	system("pause");
 	return 0;
 }
