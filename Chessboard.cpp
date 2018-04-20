@@ -335,7 +335,7 @@ bool Chessboard::isExposed(int xPos, int yPos) {
 	attackerPosition = this->findDiagonal(xPos, yPos, -1, -1);
 	attackers.push_back(this->at(attackerPosition.at(0), attackerPosition.at(1)));
 	
-
+	// checking to see if any of the visable diagonal pieces are enemy bishops or queens
 	for (int k = 0; k < attackers.size(); k++) {
 		ChessPiece attacker = attackers.at(k);
 		if ((attacker.isTeam(enemy)) && (attacker.isBishop() || attacker.isQueen()))
@@ -405,6 +405,7 @@ void Chessboard::saveGame(string filename) const {
 		exit(0);
 	} else {
 		this->makeJSONfile(filename);
+		ofstream outfile;
 	}
 }
 
@@ -538,22 +539,22 @@ void Chessboard::loadGame(string filename) {
 
 	bool Chessboard::canMoveRook(int location_x, int location_y, int destination_x, int destination_y) const{
 		if (location_y==destination_y && destination_x<location_x){
-			if (findDiagonal(location_x, location_y, -1, 0)[0]<destination_x){
+			if (findDiagonal(location_x, location_y, -1, 0)[0]<=destination_x){
 				return true;
 			}
 		}
 		else if(location_y==destination_y && destination_x>location_x){
-			if (findDiagonal(location_x, location_y, 1, 0)[0]>destination_x){
+			if (findDiagonal(location_x, location_y, 1, 0)[0]>=destination_x){
 				return true;
 			}
 		}
 		else if(location_x==destination_x && destination_y<location_y){
-			if (findDiagonal(location_x, location_y, 0, -1)[1]<destination_y){
+			if (findDiagonal(location_x, location_y, 0, -1)[1]<=destination_y){
 				return true;
 			}
 		}
 		else if(location_x==destination_x && destination_y>location_y){
-			if (findDiagonal(location_x, location_y, 0, 1)[1]>destination_y){
+			if (findDiagonal(location_x, location_y, 0, 1)[1]>=destination_y){
 				return true;
 			}
 		}
