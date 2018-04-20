@@ -603,9 +603,7 @@ void Chessboard::loadGame(string filename) {
 				return true;
 			}
 		}
-		else{
-			return false;
-		}
+		return false;
 	}
 	
 	bool Chessboard::canMovePawn(int location_x, int location_y, int destination_x, int destination_y) const{
