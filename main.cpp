@@ -28,6 +28,15 @@ void testBoard() {
 }
 
 
+void testIsAllowedToMove() {
+	cout << "testing isAllowedToMove functionn" << endl;
+	Chessboard board;
+	board.makeJSONfile("current.json");
+	// testing knight
+	cout << "1 = " << board.isAllowedToMove(0, 1, 2, 2) << endl;
+	cout << "0 = " << board.isAllowedToMove(0, 1, 2, 1) << endl;
+}
+
 void testJSON() {
 	cout << "printing json text for white bishop" << endl << endl;
 	ChessPiece piece1("white", "bishop");
@@ -271,7 +280,7 @@ void mainMenu() {
 
 int main() {
 
-	testPiece();
+	testIsAllowedToMove();
 	return 0;
 	testFileIO();
 	testisExposed();
