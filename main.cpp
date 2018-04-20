@@ -119,11 +119,11 @@ Chessboard importGame() {
 	vector<string> gameNames = getGameNames();
 	// holds the index in gameNames that corresponds to the game the user wants to open
 	int gameIndex = 0;
-	while (gameIndex > gameNames.size()) {
+	while (true) {
 		// display current options and prompt for choice
 		cout << "What game would you like to resume?" << endl;
 		for (int k = 0; k < gameNames.size(); k++) {
-			cout << "[" << ++k << "] " << gameNames.at(k) << endl;
+			cout << "[" << k + 1 << "] " << gameNames.at(k) << endl;
 		}
 		
 		// we need this because getline returns a string
@@ -141,7 +141,7 @@ Chessboard importGame() {
 	}
 	
 	// use Chessboard constructor to create board with data from json file
-	Chessboard importedGame(gameNames.at(gameIndex));
+	Chessboard importedGame(gameNames.at(gameIndex-1));
 	// return game with loaded data
 	return importedGame;
 
@@ -277,9 +277,7 @@ void mainMenu() {
 
 int main() {
 	
-	testIsAllowedToMove();
 	Chessboard x = importGame();
-	return 0;
 	testFileIO();
 	testisExposed();
 

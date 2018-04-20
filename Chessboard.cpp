@@ -404,8 +404,10 @@ void Chessboard::saveGame(string filename) const {
 		cout << "cant't use that filename to save game" << endl;
 		exit(0);
 	} else {
+		// save this game in a json file
 		this->makeJSONfile(filename);
-		ofstream outfile;
+		// append the games name to game_names.txt so we can find it later
+		appendToGameNames(filename);
 	}
 }
 

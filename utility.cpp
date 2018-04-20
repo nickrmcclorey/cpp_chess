@@ -127,7 +127,7 @@ vector<string> getGameNames() {
 	// contains names of all the saved games
 	ifstream infile;
 	
-	infile.open("e");
+	infile.open("saved_games\\game_names.txt");
 
 	// check to make sure file opened
 	if (!infile.is_open()) {
@@ -155,6 +155,12 @@ void appendToGameNames(string toAppend) {
 	
 	ofstream outfile;
 	outfile.open("saved_games\\game_names.txt");
+
+	if (!outfile.is_open()) {
+		cout << "faled to open file" << endl;
+		exit(0);
+	}
+
 	for (int k = 0; k < gameNames.size(); k++) {
 		outfile << gameNames.at(k) << endl;
 	}
