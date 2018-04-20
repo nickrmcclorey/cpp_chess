@@ -138,7 +138,7 @@ void Chessboard::changeTurn() {
 }
 
 
-void Chessboard::move(int fromX, int fromY, int toX, int toY) {
+void Chessboard::move(int fromX, int fromY, int toX, int toY){
 	
 	// empty piece to replace spot left
 	ChessPiece empty;
@@ -529,8 +529,38 @@ void Chessboard::loadGame(string filename) {
         else if(!isValidIndex(location_x, location_y) && !isValidIndex(destination_x, destination_y)){
         	return false; 
         }
-        return true;
-    }
+        else if (board[location_y][location_x].type() == "king"){
+        	if (canMoveKing(location_x, location_y, destination_x, destination_y)){
+        		return true;
+        	}
+        }
+        else if (board[location_y][location_x].type() == "queen"){
+        	if (canMoveQueen(location_x, location_y, destination_x, destination_y)){
+        		return true;
+        	}
+        }
+        else if (board[location_y][location_x].type() == "bishop"){
+        	if (canMoveBishop(location_x, location_y, destination_x, destination_y)){
+        		return true;
+        	}
+        }
+        else if (board[location_y][location_x].type() == "knight"){
+        	if (canMoveKnight(location_x, location_y, destination_x, destination_y)){
+        		return true;
+        	}
+        }
+        else if (board[location_y][location_x].type() == "pawn"){
+        	if (canMovePawn(location_x, location_y, destination_x, destination_y)){
+        		return true;
+        	}
+        }
+        else if (board[location_y][location_x].type() == "rook"){
+        	if (canMoveRook(location_x, location_y, destination_x, destination_y)){
+        		return true;
+       		}
+        }	
+        return false;
+	}
     
     bool Chessboard::canMoveKing(int location_x, int location_y, int destination_x, int destination_y) const{
         //TODO:: FINISH FUNCTION
