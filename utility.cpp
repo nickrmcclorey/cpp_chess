@@ -158,7 +158,9 @@ void appendToGameNames(string toAppend) {
 		exit(0);
 	}
 
-	for (int k = 0; k < gameNames.size(); k++) {
+	for (int k = 0; k < gameNames.size()-1; k++) {
 		outfile << gameNames.at(k) << endl;
 	}
+	outfile << gameNames.back();
+
 }

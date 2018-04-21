@@ -3,6 +3,7 @@
 #define Chessboard_H
 
 // this file contains the definition of chessboard
+
 #include <vector>
 #include "ChessPiece.h"
 
@@ -10,10 +11,7 @@ using namespace std;
 
 class Chessboard {
 private:
-	// I think it would be more efficient to make the board
-	// a 2d vector of pointers so there isn't empty spaces
-	// that have to be filled with chess_pieces
-	// I'm willing to change it if it bugs you
+	
 	ChessPiece board[8][8];
 	string turn;
 	bool AI_playing;
@@ -24,9 +22,9 @@ public:
 	// constructor
 	Chessboard();
 	Chessboard(string fileToImport); // could be a constructor to resume a game saved to a file 
-	Chessboard(vector<ChessPiece> gameboard); //could be used to create a gameboard with pieces in a certain spot.
-
+	
 	string getTurn() const;
+	void changeTurn();
 	bool AI_is_playing() const;
 	void turn_AI_off();
 	void turn_AI_on();
@@ -43,25 +41,26 @@ public:
 	bool canMoveKnight(int, int, int, int) const;
 	bool canMovePawn(int, int, int, int) const;
 
-	bool checkmate(); // check for checkmate
+	bool checkmate(string); // check for checkmate
+	bool check(string) ;
 
 	// utility / mutators
-	void move(int, int, int, int); // used to move a piece
+	void move(int, int, int, int); // first two ints are location, last two ints are destination
 	void move(vector<int> moveSet); // same as function above but ints are in vector
 	ChessPiece at(int x, int y); // could use to index board
 	void displayBoard() const; // used to display board for debugging
 	bool isExposed(int xPos, int yPos, string);
 	bool isValidIndex(const int &x, const int &y) const;
 	vector<int> findDiagonal(int, int, int, int) const;
-	void makeJSONfile(string) const;
-	void makeJSONfile() const;
 	vector<ChessPiece> allPieces() const;
-	void changeTurn();
+	
 
-	// functions we'd need to do a save, load game feature
+	// functions to save, load and display game
 	void loadGame(string file_to_import);
 	void saveGame(string fileName) const;
 	void newGame();
+	void makeJSONfile(string) const;
+	void makeJSONfile() const;
 
 
 };

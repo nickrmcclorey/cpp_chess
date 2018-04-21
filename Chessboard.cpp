@@ -81,7 +81,8 @@ Chessboard::Chessboard(string fileToLoad) {
 // returns piece at location
 ChessPiece Chessboard::at(int x, int y) {
 	if ((x > 7) || (x < 0) || (y > 7) || (y < 0)){
-		// FIX ME throw logic_error("Not valid Index");
+		cout << x << "," << y << " is an invalid index" << endl;
+		exit(0);
 	}
 	
 	ChessPiece toReturn = board[x][y];
@@ -142,10 +143,10 @@ void Chessboard::move(int fromX, int fromY, int toX, int toY){
 	
 	// empty piece to replace spot left
 	ChessPiece empty;
-	// get the piece captured. this could be an empty piece
-	//essPiece captured_piece = board[toX][toY];
+
 	// move the piece to its destination
 	board[toX][toY] = board[fromX][fromY];
+
 	// erease the spot the piece was in
 	board[fromX][fromY] = empty;
 	
@@ -230,16 +231,24 @@ bool Chessboard::isValidIndex(const int &x, const int &y) const {
 
 // checks to see if a piece is vulnerable to being hit
 bool Chessboard::isExposed(int xPos, int yPos, string friendly) {
-
+	
 	string enemy = (!strcmp(friendly.c_str(), "black")) ? "white" : "black";
+	//cout << "inside isExposed with enemy being " << enemy << endl;
+	//cout << "origin is " << xPos << "," << yPos << endl;
 
+	int count = 0;
 	for (int col = 0; col < 8; col++) {
 		for (int row = 0; row < 8; row++) {
-			if (board[col][row].isTeam(enemy) && this->isAllowedToMove(col, row, xPos, yPos))
+			count++;
+			//cout << "col,row = " << col << "," << row << endl;
+			if (this->at(col, row).isTeam(enemy) && this->isAllowedToMove(col, row, xPos, yPos)) {
+				//cout << this->at(col,row).type() << " at " << col << "," << row << " can move to " << xPos << "," << yPos << endl;
 				return true;
+			}
 		}
-		return false;
 	}
+	//cout << "returning false after looking at " << count << " different moves" << endl;
+	return false;
 	//if (this->at(xPos, yPos).isEmpty()) {
 	//	return false;
 	//}
@@ -375,18 +384,37 @@ vector<int> Chessboard::findDiagonal(int xPos, int yPos, int xDir, int yDir) con
 	return { xPos + xAdjustor, yPos + yAdjustor };
 }
 
+
+bool Chessboard::check(string teamToEscape) {
+	int kingX = -1, kingY = 1;
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+
+			if (this->at(col, row).isKing() && this->at(col, row).isTeam(teamToEscape)) {
+				kingX = col;
+				kingY = row;
+				break;
+			}
+		}
+	}
+	if (this->isExposed(kingX, kingY, teamToEscape))
+		return true;
+	else
+		return false;
+}
+
 // check for checkmate on current board. Looks to see if current player has any options
 // so if turn is white then it checks if white king is in check mate
-bool Chessboard::checkmate() {
+bool Chessboard::checkmate(string teamToEscape) {
 
 	// holds positions of king
 	int kingX = -1, kingY = -1;
 
 	// finds king and sets kingX and kingY
-	for (int row = 0; row < 7; row++) {
-		for (int col = 0; col < 7; col++) {
-			ChessPiece spot;
-			if (spot.isKing() && spot.isTeam(this->getTurn())) {
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
+			
+			if (this->at(col,row).isKing() && this->at(col,row).isTeam(teamToEscape)) {
 				kingX = col;
 				kingY = row;
 				break;
@@ -394,21 +422,35 @@ bool Chessboard::checkmate() {
 		}
 	}
 
-	ChessPiece king = board[kingX][kingY];
+	if (kingX == -1 || kingY == -1) {
+		cout << "couldn't find the king" << endl;
+		exit(0);
+	}
+
+	//cout << "king is at " << kingX << "," << kingY << endl;
+	ChessPiece king = this->at(kingX, kingY);
 	// checks to see if he's exposed on current spot
 	if (!this->isExposed(kingX, kingY, king.team()))
 		return false;
+	
+	Chessboard* tempBoard = new Chessboard;
+	
+	tempBoard->makeJSONfile();
 
 	// checks all adjacent spots to see if he can move there and be safe
 	for (int row = -1; row <= 1; row++) {
-		for (int col = -1; row <= 1; row++) {
+		for (int col = -1; col <= 1; col++) {
+			*tempBoard = *this;
 			// if he can move to that spot and isn't exposed on that spot, return false
-			if (this->isAllowedToMove(kingX, kingY, kingX+col, kingY+row) && !isExposed(kingX, kingY, king.team())) {
+			if (tempBoard->isAllowedToMove(kingX, kingY, kingX+col, kingY+row) ) {
+				tempBoard->move(kingX, kingY, kingX + col, kingY + row);
+				if (!tempBoard->isExposed(kingX + col, kingY + row, teamToEscape)) 
 				return false;
 			}
 		}
 	}
 
+	delete tempBoard;
 	// king has no more options return true
 	return true;
 }
@@ -521,13 +563,13 @@ void Chessboard::loadGame(string filename) {
 	bool Chessboard::isAllowedToMove(int location_x, int location_y, int destination_x, int destination_y) const{
         //TODO:: FINISH FUNCTION
 		
-        if (!isValidIndex(location_x, location_y) && !isValidIndex(destination_x, destination_y)) {
+        if (!isValidIndex(location_x, location_y) || !isValidIndex(destination_x, destination_y)) {
+			//cout << "invalid index" << endl;
 			return false;
         }
         else if(board[location_x][location_y].isTeam(board[destination_x][destination_y].team())){
-			cout << "moving on top of teammate" << endl;
-			//cout << board[destination_x][destination_y].team() << endl;
-        	return false;
+			//cout << location_x << "," << location_y << " moving to team mate at " << destination_x << "," << destination_y << endl;
+			return false;
         }
         else if((location_x == destination_x) && (location_y == destination_y)){
         	return false; 
@@ -553,7 +595,6 @@ void Chessboard::loadGame(string filename) {
         	}
         }
         else if (board[location_x][location_y].isPawn()){
-			cout << "entering pawn" << endl;
         	if (canMovePawn(location_x, location_y, destination_x, destination_y)){
         		return true;
         	}
@@ -569,14 +610,14 @@ void Chessboard::loadGame(string filename) {
 	}
     
     bool Chessboard::canMoveKing(int location_x, int location_y, int destination_x, int destination_y) const{
-        //TODO:: FINISH FUNCTION
+		//cout << "inside can move King trying to move from" << location_x << "," << location_y << " to " << destination_x << "," << destination_y << endl;
         if (location_x == destination_x && location_y == destination_y){
 			return false;        	
         }
-        else if(!isValidIndex(location_x, location_y) && !isValidIndex(destination_x, destination_y)){
+        else if(!isValidIndex(location_x, location_y) || !isValidIndex(destination_x, destination_y)){
         	return false;
         }
-        else if (abs(location_x - destination_x)<=1 && (abs(location_y - destination_y)<=1)){
+        else if (abs(location_x - destination_x) <= 1 && (abs(location_y - destination_y) <= 1)){
         	return true;
         }
         else{
@@ -652,7 +693,10 @@ void Chessboard::loadGame(string filename) {
 	
 	bool Chessboard::canMoveKnight(int location_x, int location_y, int destination_x, int destination_y) const{
 		if (location_x!=destination_x && location_y!=destination_y){
-			if ((abs(location_x-destination_x)+abs(location_y-destination_y==3))){
+			if (abs(location_x - destination_x) > 2 || abs(location_y - destination_y) > 2)
+				return false;
+			
+			if (abs(location_x-destination_x) + abs(location_y-destination_y) == 3 ){
 				return true;
 			}
 		}
@@ -670,29 +714,26 @@ void Chessboard::loadGame(string filename) {
 			else if(destination_x == location_x+1 && destination_y == location_y){
 				return true;
 			}
-			else if(destination_x == location_x+2 && destination_y == location_y && !board[location_y][location_x].hasMoved()){
+			else if(destination_x == location_x+2 && destination_y == location_y && !board[location_y][location_x].hasMoved() && board[destination_x][destination_y].isEmpty()){
 				return true;
 			}
 			else{
-				cout << "found black piece but didn't think it was okay to move" << endl;
 				return false;
 			}
 		}
 		else if (board[location_x][location_y].team() == "white"){
-			cout << "failed to find black piece" << endl;
 			if (destination_x == location_x-1 && (destination_y == location_y+1 || destination_y == location_y-1)){
 				return true;
 			}
 			else if(destination_x == location_x-1 && destination_y == location_y){
 				return true;
 			}
-			else if(destination_x == location_x-2 && destination_y == location_y && !board[location_y][location_x].hasMoved()){
+			else if(destination_x == location_x-2 && destination_y == location_y && !board[location_y][location_x].hasMoved() && board[destination_x][destination_y].isEmpty()){
 				return true;
 			}
 			else{
 				return false;
 			}
 		}
-		cout << "failed to find blakc or whtie piece" << endl;
 		return false;
 	}

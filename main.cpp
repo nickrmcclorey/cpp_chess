@@ -65,17 +65,41 @@ void testIsAllowedToMove() {
 
 	// testing pawns
 	cout << "pawn" << endl;
-	//cout << "1 = " << game_board.isAllowedToMove(1, 0, 2, 0) << endl;
-	//cout << "0 = " << game_board.isAllowedToMove(1, 5, 2, 6) << endl;
-	//cout << "0 = " << game_board.isAllowedToMove(1, 0, 2, 1) << endl;
+	cout << "1 = " << game_board.isAllowedToMove(1, 0, 2, 0) << endl;
+	cout << "0 = " << game_board.isAllowedToMove(1, 5, 2, 6) << endl;
+	cout << "0 = " << game_board.isAllowedToMove(1, 0, 2, 1) << endl;
 	game_board.move(7, 7, 2, 1);
 	cout << "1 = " << game_board.canMovePawn(1, 0, 2, 1) << endl;
 	cout << game_board.at(2, 1).team();
 
-	
+	// testing kings
+	cout << "king" << endl;
+	cout << "0 = " << game_board.isAllowedToMove(0, 4, 1, 4) << endl;
+	cout << "0 = " << game_board.isAllowedToMove(0, 4, 0, 2) << endl;
+	cout << "1 = " << game_board.isAllowedToMove(0, 4, 0, 3) << endl;
+	game_board.move(0, 4, 4, 1);
+	cout << "1 = " << game_board.isAllowedToMove(4, 1, 5, 2) << endl;
+	cout << "1 = " << game_board.isAllowedToMove(4, 1, 3, 1) << endl;
+	cout << "0 = " << game_board.isAllowedToMove(4, 1, 4, 3) << endl;
+	game_board.move(4, 1, 6, 3);
+	cout << "1 = " << game_board.isAllowedToMove(7, 4, 6, 3);
 
 	game_board.makeJSONfile("current.json");
 	game_board.makeJSONfile("test.json");
+}
+
+void testCheckmate() {
+
+	Chessboard game;
+	cout << "0 = " << game.checkmate("black") << endl;
+	game.move(7, 4, 2, 5);
+	game.move(0, 7, 3, 7);
+	cout << "1 = " << game.checkmate("white") << endl;
+	game.move(3, 7, 4, 7);
+	cout << "0 = " << game.checkmate("white") << endl;
+
+
+	game.makeJSONfile();
 }
 
 void testJSON() {
@@ -100,6 +124,15 @@ void testPiece() {
 	cout << "1 = " << x.at(0, 0).isRook() << endl;
 	cout << "rook = " << x.at(0, 0).type() << endl;
 	cout << "1 = " << x.at(0, 3).isQueen() << endl;
+	test.setType("pawn");
+	cout << "1 = " << test.isPawn() << endl;
+	test.setType("king");
+	cout << "1 = " << test.isKing() << endl;
+	cout << "0 = " << test.isQueen() << endl;
+	test.setType("queen");
+	cout << "1 = " << test.isQueen() << endl;
+
+
 }
 
 void testisExposed() {
@@ -241,7 +274,7 @@ void playChess(Chessboard game) {
 		// update the gameboard
 		game.makeJSONfile("current.json");
 
-	} while (!game.checkmate());
+	} while (!game.checkmate(game.getTurn()));
 
 	cout << "Game Over" << endl << game.getTurn() << " lost" << endl;
 
@@ -321,9 +354,11 @@ void mainMenu() {
 
 int main() {
 	
-	
-	testPiece();
-	testIsAllowedToMove();
+	mainMenu();
+	//testCheckmate();
+	//appendToGameNames("test");
+	//testPiece();
+	//testIsAllowedToMove();
 
 	return 0;
 }
