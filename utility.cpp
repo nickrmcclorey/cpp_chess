@@ -186,7 +186,7 @@ int askInteger(string prompt) {
 
 	do {
 		cout << endl;
-		cout << prompt << endl;
+		cout << prompt;
 		userInput;
 		getline(cin, userInput);
 

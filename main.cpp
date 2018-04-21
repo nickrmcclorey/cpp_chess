@@ -1,3 +1,6 @@
+// Sam Oaks
+// Nick McClorey 
+
 #include <iostream>
 #include <cstdlib>
 #include "ChessPiece.h"
@@ -216,11 +219,13 @@ bool inGameMenu(const Chessboard &game) {
 	bool validResponse = false;
 	string userInput;
 	do {
+		// display options
 		cout << endl;
 		cout << "[1] resume game" << endl;
 		cout << "[2] save game" << endl;
 		cout << "[3] return to main menu" << endl;
 
+		// get input as integer
 		option = askInteger("");
 
 		if (option >= 1 && option <= 3)
@@ -232,11 +237,34 @@ bool inGameMenu(const Chessboard &game) {
 	if (option == 1) {
 		return false;
 	} else if (option == 2) {
-
+		// save the game in json file named by user
 		while (true) {
-			cout << "What would you like to name your game?" << endl;
+
+			cout << "What would you like to name your game?" << endl << "Do not include any file extensions or periods" << endl;
 			getline(cin, userInput);
+			
+			// make sure they don't overwrite json file used to display game
 			if (userInput.find(".") == string::npos && userInput.find("current_game") == string::npos) {
+				vector<string> gameNames = getGameNames();
+				
+				bool nameConflict = false;
+				for (int k = 0; k < gameNames.size(); k++) {
+					if (gameNames.at(k) == userInput + ".json") {
+						nameConflict = true;
+						break;
+					}
+				}
+
+				if (nameConflict) {
+					cout << "You're about to overwrite another game" << endl;
+					cout << "Are you sure?" << endl;
+					int option = askInteger("[1] yes\n[2] no\n");
+					if (option == 2) {
+						// by going to the top of the loop, the user will be prompted again
+						continue;
+					}
+				}
+
 				game.saveGame(userInput);
 				cout << "game saved" << endl;
 				return false;
@@ -244,6 +272,7 @@ bool inGameMenu(const Chessboard &game) {
 		}
 	}
 	else if (option == 3) {
+		// returning treu means we want to go to the main menu
 		return true;
 	}
 
@@ -255,7 +284,7 @@ vector<int> getMoveVec(Chessboard game) {
 	vector<int> moveVec(4, -1);
 	do {
 		
-		cout << "Enter your move. It's currently " << game.getTurn() << "'s turn" << endl;
+		cout << endl << "Enter your move. It's currently " << game.getTurn() << "'s turn" << endl;
 		cout << "type \"menu\" for more options" << endl;
 
 		string userInput;
@@ -265,11 +294,16 @@ vector<int> getMoveVec(Chessboard game) {
 		//cout << moveVec.at(0) << moveVec.at(1) << moveVec.at(2) << moveVec.at(3) << endl;
 		if (moveVec.at(0) == -1 || (!game.isAllowedToMove(moveVec.at(0), moveVec.at(1), moveVec.at(2), moveVec.at(3))) || !game.at(moveVec.at(0),moveVec.at(1)).isTeam(game.getTurn())) {
 			if (!strcmp("menu", userInput.c_str())) {
+				
+				// goes to small menu. if it returns true it means user want to
+				// return to the main menu
 				bool toQuit = inGameMenu(game);
 				if (toQuit) {
+					// return empty vector to signify we want to go to main menu
 					return {};
 				}
 			} else {
+				// this happens when user enteres nonsense
 				cout << "That isn't a valid move" << endl;
 				continue;
 			}
@@ -284,9 +318,9 @@ vector<int> getMoveVec(Chessboard game) {
 			cout << "[2] no" << endl;
 			getline(cin, userInput);
 
-			// if they are sure about their move
+			
 			if (!strcmp(userInput.c_str(), "1")) {
-				break;
+				return moveVec;
 			} else { // they want to undo their turn
 
 				cout << "Okay, undoing your turn" << endl;
@@ -298,7 +332,7 @@ vector<int> getMoveVec(Chessboard game) {
 				continue;
 			}
 		}
-		// there is a break statement to escape loop
+		// there is a break statement to escape loop 
 	} while (true);
 
 	return moveVec;
@@ -313,6 +347,8 @@ void playChess(Chessboard game) {
 		// this function will also make sure user enters in a move thats follows the rules of chess
 		vector<int> moveVec = getMoveVec(game);
 
+		// if getMoveVec returns an empty array, it means
+		// user wants to return to main menu
 		if (moveVec.size() == 0)
 			return;
 
@@ -407,7 +443,9 @@ void mainMenu() {
 }
 
 int main() {
-	
+	// Sam Oaks
+	// Nick McClorey 
+
 	mainMenu();
 	//testCheckmate();
 	//appendToGameNames("test");

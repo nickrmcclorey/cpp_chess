@@ -16,8 +16,10 @@ private:
 	string turn;
 	bool AI_playing;
 	string AI_team;
+	
 
 public:
+	ChessPiece lastCaptured;
 
 	// constructor
 	Chessboard();
@@ -30,6 +32,7 @@ public:
 	void turn_AI_on();
 	string get_AI_team() const;
 	void set_AI_team(string);
+	void setAt(int, int, ChessPiece);
 
 	// functions to check to see if pieces are allowed to move
 	bool isAllowedToMove(int location_x, int location_y, int destination_x, int destination_y) const; // checks to see if a piece is allowed to move. could call other functions for specific pieces

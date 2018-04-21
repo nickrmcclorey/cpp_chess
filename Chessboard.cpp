@@ -139,10 +139,17 @@ void Chessboard::changeTurn() {
 }
 
 
+void Chessboard::setAt(int x, int y, ChessPiece toPlace) {
+	board[x][y] = toPlace;
+}
+
 void Chessboard::move(int fromX, int fromY, int toX, int toY){
 	
 	// empty piece to replace spot left
 	ChessPiece empty;
+
+	// holds piece that is captured
+	lastCaptured = this->at(toX, toY);
 
 	// move the piece to its destination
 	board[toX][toY] = board[fromX][fromY];
@@ -552,7 +559,8 @@ void Chessboard::loadGame(string filename) {
 		// the last element of the array doesn't have a comma. this is how we know when to stop
 	} while (!(pieces.find(",") == string::npos));
 	
-		
+	this->turn = valueFromKey("turn", raw);
+
 	// murder the infile
 	infile.close();
 
