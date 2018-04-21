@@ -4,7 +4,8 @@ using namespace std;
 
 int stoi(char c);
 int stoi(string &num_s);
-
+int askInteger(string prompt);
+bool isInt(string input);
 vector<int> moveFromUserString(string raw);
 string removeSpaces(string);
 vector<string> getGameNames();

@@ -68,7 +68,7 @@ vector<int> moveFromUserString(string raw) {
 	vector<int> toReturn(4,-1);
 	vector<int> empty (4, -1);
 	if (raw.size() != 6) {
-		cout << raw << " is " << raw.size() << " long" << endl;
+		//cout << raw << " is " << raw.size() << " long" << endl;
 		return toReturn;
 	}
 
@@ -120,7 +120,7 @@ vector<int> moveFromUserString(string raw) {
 }
 
 vector<string> getGameNames() {
-	cout << "Entered getGameNames" << endl;
+	//cout << "Entered getGameNames" << endl;
 	// contains names of all the saved games
 	ifstream infile;
 	
@@ -147,6 +147,10 @@ vector<string> getGameNames() {
 }
 
 void appendToGameNames(string toAppend) {
+
+	if (toAppend.find(".json") == string::npos)
+		toAppend.append(".json");
+
 	vector<string> gameNames = getGameNames();
 	gameNames.push_back(toAppend);
 	
@@ -163,4 +167,35 @@ void appendToGameNames(string toAppend) {
 	}
 	outfile << gameNames.back();
 
+}
+
+
+bool isInt(string input) {
+	for (int k = 0; k < input.size(); k++) {
+		char letter = input.at(k);
+		if (letter > '9' || letter < '0')
+			return false;
+	}
+	return true;
+}
+
+
+int askInteger(string prompt) {
+	string userInput;
+
+
+	do {
+		cout << endl;
+		cout << prompt << endl;
+		userInput;
+		getline(cin, userInput);
+
+		if (!isInt(userInput))
+			cout << "response wasn't understood" << endl;
+		else
+			break;
+
+	} while (isInt(userInput));
+
+	return stoi(userInput);
 }

@@ -42,7 +42,7 @@ public:
 	bool canMovePawn(int, int, int, int) const;
 
 	bool checkmate(string); // check for checkmate
-	bool check(string) ;
+	bool check(string);
 
 	// utility / mutators
 	void move(int, int, int, int); // first two ints are location, last two ints are destination

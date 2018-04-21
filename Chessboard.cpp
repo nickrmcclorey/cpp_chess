@@ -457,9 +457,9 @@ bool Chessboard::checkmate(string teamToEscape) {
 
 
 void Chessboard::saveGame(string filename) const {
-	if (filename.find("current_game")) {
-		cout << "cant't use that filename to save game" << endl;
-		exit(0);
+	if (filename.find("current_game") != string::npos) {
+		cout << "can't use that filename to save game" << endl;
+		
 	} else {
 		// save this game in a json file
 		this->makeJSONfile(filename);

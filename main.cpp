@@ -211,6 +211,43 @@ Chessboard importGame() {
 }
 
 
+bool inGameMenu(const Chessboard &game) {
+	int option = 0;
+	bool validResponse = false;
+	string userInput;
+	do {
+		cout << endl;
+		cout << "[1] resume game" << endl;
+		cout << "[2] save game" << endl;
+		cout << "[3] return to main menu" << endl;
+
+		option = askInteger("");
+
+		if (option >= 1 && option <= 3)
+			break;
+
+		cout << "response wasn't understood" << endl;
+	}  while (validResponse);
+
+	if (option == 1) {
+		return false;
+	} else if (option == 2) {
+
+		while (true) {
+			cout << "What would you like to name your game?" << endl;
+			getline(cin, userInput);
+			if (userInput.find(".") == string::npos && userInput.find("current_game") == string::npos) {
+				game.saveGame(userInput);
+				cout << "game saved" << endl;
+				return false;
+			}
+		}
+	}
+	else if (option == 3) {
+		return true;
+	}
+
+}
 // this function asks the user for their next move
 // it ensure the move they enter is valid and then return a 
 // vector that corresponds to the moves to pass into the .move() function
@@ -218,22 +255,28 @@ vector<int> getMoveVec(Chessboard game) {
 	vector<int> moveVec(4, -1);
 	do {
 		
-		cout << "Enter your move. It's currently " << game.getTurn() << endl;
+		cout << "Enter your move. It's currently " << game.getTurn() << "'s turn" << endl;
 		cout << "type \"menu\" for more options" << endl;
 
 		string userInput;
 		getline(cin, userInput);
 
 		moveVec = moveFromUserString(userInput);
-		cout << moveVec.at(0) << moveVec.at(1) << moveVec.at(2) << moveVec.at(3) << endl;
-		if (moveVec.at(0) == -1 || (!game.isAllowedToMove(moveVec.at(0), moveVec.at(1), moveVec.at(2), moveVec.at(3)))) {
-		
-			cout << "That isn't a valid move" << endl;
-			continue;
+		//cout << moveVec.at(0) << moveVec.at(1) << moveVec.at(2) << moveVec.at(3) << endl;
+		if (moveVec.at(0) == -1 || (!game.isAllowedToMove(moveVec.at(0), moveVec.at(1), moveVec.at(2), moveVec.at(3))) || !game.at(moveVec.at(0),moveVec.at(1)).isTeam(game.getTurn())) {
+			if (!strcmp("menu", userInput.c_str())) {
+				bool toQuit = inGameMenu(game);
+				if (toQuit) {
+					return {};
+				}
+			} else {
+				cout << "That isn't a valid move" << endl;
+				continue;
+			}
 		} else {
 			// move the piece and update the json file
 			game.move(moveVec);
-			game.makeJSONfile("current.json");
+			game.makeJSONfile();
 
 			// ask if they are sure about the move
 			cout << "Board has been updated\nAre you sure this is your move?" << endl;
@@ -241,13 +284,17 @@ vector<int> getMoveVec(Chessboard game) {
 			cout << "[2] no" << endl;
 			getline(cin, userInput);
 
-			if (strcmp(userInput.c_str(), "1")) {
+			// if they are sure about their move
+			if (!strcmp(userInput.c_str(), "1")) {
 				break;
-			} else {
-				// reverse the move by switching the destination and current position
+			} else { // they want to undo their turn
+
+				cout << "Okay, undoing your turn" << endl;
+				
+				// undo the move by switching the destination and current position
 				game.move(moveVec.at(2), moveVec.at(3), moveVec.at(0), moveVec.at(1));
-				// update JSON file
-				game.makeJSONfile("current.json");
+				
+				game.makeJSONfile();
 				continue;
 			}
 		}
@@ -259,20 +306,24 @@ vector<int> getMoveVec(Chessboard game) {
 
 // plays the game of chess
 void playChess(Chessboard game) {
+	game.makeJSONfile();
 
 	do {
 
 		// this function will also make sure user enters in a move thats follows the rules of chess
 		vector<int> moveVec = getMoveVec(game);
 
-		cout << "moving piece" << endl;
+		if (moveVec.size() == 0)
+			return;
+
+		//cout << "moving piece from " << moveVec.at(0) << "," << moveVec.at(1) << " to " << moveVec.at(2) << "," << moveVec.at(3) << endl;
 		game.move(moveVec);
 
 		// switch the turn
 		game.changeTurn();
 
 		// update the gameboard
-		game.makeJSONfile("current.json");
+		game.makeJSONfile();
 
 	} while (!game.checkmate(game.getTurn()));
 
@@ -285,12 +336,12 @@ void mainMenu() {
 	while (true) {
 
 		Chessboard game;
-		int option;
-		string userChoice;
+		int option = 0;
+		string userChoice = "none";
 		cout << "Chess" << endl << endl;
 
 		// ask whether user want to start new game or load a saved game
-		while (option > 3 || option < 0) {
+		while (option > 3 || option <= 0) {
 
 			// show options
 			cout << "[1] New Game" << endl;
@@ -305,6 +356,9 @@ void mainMenu() {
 			if (option > 3 || option < 0) {
 				cout << "invalid option" << endl;
 				continue;
+			}
+			else if (option == 1) {
+				game.newGame();
 			}
 			else if (option == 2) {
 				game = importGame();
@@ -338,7 +392,7 @@ void mainMenu() {
 				game.turn_AI_on();
 				cout << "What team are you on?" << endl;
 				getline(cin, userChoice);
-				while (strcmp(userChoice.c_str(), "white") || strcmp(userChoice.c_str(), "black")) {
+				while (!strcmp(userChoice.c_str(), "white") || !strcmp(userChoice.c_str(), "black")) {
 					cout << "That's not a team" << endl;
 					cout << "What team are you on?" << endl;
 					getline(cin, userChoice);
