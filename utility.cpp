@@ -190,12 +190,13 @@ int askInteger(string prompt) {
 		userInput;
 		getline(cin, userInput);
 
+		userInput = removeSpaces(userInput);
 		if (!isInt(userInput))
 			cout << "response wasn't understood" << endl;
 		else
 			break;
 
-	} while (isInt(userInput));
+	} while (!isInt(userInput));
 
 	return stoi(userInput);
 }

@@ -188,26 +188,27 @@ Chessboard importGame() {
 	while (true) {
 		// display current options and prompt for choice
 		cout << "What game would you like to resume?" << endl;
+		cout << "[1] Create new game" << endl;
 		for (int k = 0; k < gameNames.size(); k++) {
-			cout << "[" << k + 1 << "] " << gameNames.at(k) << endl;
+			cout << "[" << k + 2 << "] " << gameNames.at(k) << endl;
 		}
 		
-		// we need this because getline returns a string
-		string gameToImport;
-		// get the number entered by user
-		getline(cin, gameToImport);
-		// convert it to an integer
-		gameIndex = stoi(gameToImport);
+		gameIndex = askInteger("");
+		
+		if (gameIndex = 1) {
+			Chessboard newGame;
+			return newGame;
+		}
 
 		// make sure index is valid
-		if (gameIndex > gameNames.size())
+		if (gameIndex-1 > gameNames.size())
 			cout << "That's not a valid option" << endl;
 		else
 			break;
 	}
 	
 	// use Chessboard constructor to create board with data from json file
-	Chessboard importedGame(gameNames.at(gameIndex-1));
+	Chessboard importedGame(gameNames.at(gameIndex-2));
 	// return game with loaded data
 	return importedGame;
 
@@ -313,13 +314,11 @@ vector<int> getMoveVec(Chessboard game) {
 			game.makeJSONfile();
 
 			// ask if they are sure about the move
-			cout << "Board has been updated\nAre you sure this is your move?" << endl;
-			cout << "[1] yes" << endl;
-			cout << "[2] no" << endl;
-			getline(cin, userInput);
+			cout << "Board has been updated" << endl;
+			int option = askInteger("Are you sure this is your move?\n[1] yes\n[2] no\n");
 
 			
-			if (!strcmp(userInput.c_str(), "1")) {
+			if (option == 1) {
 				return moveVec;
 			} else { // they want to undo their turn
 
@@ -374,7 +373,7 @@ void mainMenu() {
 		Chessboard game;
 		int option = 0;
 		string userChoice = "none";
-		cout << "Chess" << endl << endl;
+		cout << endl << "Chess" << endl << endl;
 
 		// ask whether user want to start new game or load a saved game
 		while (option > 3 || option <= 0) {
