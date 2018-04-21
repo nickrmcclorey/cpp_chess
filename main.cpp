@@ -30,41 +30,52 @@ void testBoard() {
 
 void testIsAllowedToMove() {
 	cout << "testing isAllowedToMove functionn" << endl;
-	Chessboard board;
+	Chessboard game_board;
 	
 	// testing knight
 	cout << "knight" << endl;
-	cout << "1 = " << board.isAllowedToMove(0, 1, 2, 2) << endl;
-	cout << "0 = " << board.isAllowedToMove(0, 1, 2, 1) << endl;
-	cout << "0 = " << board.isAllowedToMove(0, 1, 3, 1) << endl;
+	cout << "1 = " << game_board.isAllowedToMove(0, 1, 2, 2) << endl;
+	cout << "0 = " << game_board.isAllowedToMove(0, 1, 2, 1) << endl;
+	cout << "0 = " << game_board.isAllowedToMove(0, 1, 3, 1) << endl;
 	
 	// testing bishop
-	board.move(0, 2, 2, 2);
+	game_board.move(0, 2, 2, 2);
 	cout << "bishop" << endl;
-	cout << "0 = " << board.isAllowedToMove(2, 2, 4, 3) << endl;
-	cout << "1 = " << board.isAllowedToMove(2, 2, 6, 6) << endl;
-	cout << "1 = " << board.isAllowedToMove(2, 2, 4, 4) << endl;
+	cout << "0 = " << game_board.isAllowedToMove(2, 2, 4, 3) << endl;
+	cout << "1 = " << game_board.isAllowedToMove(2, 2, 6, 6) << endl;
+	cout << "1 = " << game_board.isAllowedToMove(2, 2, 4, 4) << endl;
 
 	// testing rook
 	cout << "rook" << endl;
-	cout << "0 = " << board.isAllowedToMove(0, 7, 2, 7) << endl;
-	board.move(0, 7, 2, 7);
-	cout << "1 = " << board.isAllowedToMove(2, 7, 6, 7) << endl;
+	cout << "0 = " << game_board.isAllowedToMove(0, 7, 2, 7) << endl;
+	game_board.move(0, 7, 2, 7);
+	cout << "1 = " << game_board.isAllowedToMove(2, 7, 6, 7) << endl;
 
-	cout << "0 = " << board.isAllowedToMove(1, 1, 1, 1) << endl;
-	cout << "0 = " << board.isAllowedToMove(1, 2, 2, 2) << endl;
-	cout << "0 = " << board.isAllowedToMove(1, 2, 10, 1) << endl;
+	cout << "0 = " << game_board.isAllowedToMove(1, 1, 1, 1) << endl;
+	cout << "0 = " << game_board.isAllowedToMove(1, 2, 2, 2) << endl;
+	cout << "0 = " << game_board.isAllowedToMove(1, 2, 10, 1) << endl;
 
 	// testing queen
 	cout << "queen" << endl;
-	board.move(0, 3, 3, 3);
-	cout << "0 = " << board.isAllowedToMove(3, 3, 5, 6) << endl;
-	cout << "1 = " << board.isAllowedToMove(3, 3, 5, 5) << endl;
-	cout << "0 = " << board.isAllowedToMove(3, 3, 7, 7) << endl;
-	cout << "1 = " << board.isAllowedToMove(3, 3, 6, 6) << endl;
+	game_board.move(0, 3, 3, 3);
+	cout << "0 = " << game_board.isAllowedToMove(3, 3, 5, 6) << endl;
+	cout << "1 = " << game_board.isAllowedToMove(3, 3, 5, 5) << endl;
+	cout << "0 = " << game_board.isAllowedToMove(3, 3, 7, 7) << endl;
+	cout << "1 = " << game_board.isAllowedToMove(3, 3, 6, 6) << endl;
 
-	board.makeJSONfile("current.json");
-	board.makeJSONfile("test.json");
+	// testing pawns
+	cout << "pawn" << endl;
+	//cout << "1 = " << game_board.isAllowedToMove(1, 0, 2, 0) << endl;
+	//cout << "0 = " << game_board.isAllowedToMove(1, 5, 2, 6) << endl;
+	//cout << "0 = " << game_board.isAllowedToMove(1, 0, 2, 1) << endl;
+	game_board.move(7, 7, 2, 1);
+	cout << "1 = " << game_board.canMovePawn(1, 0, 2, 1) << endl;
+	cout << game_board.at(2, 1).team();
+
+	
+
+	game_board.makeJSONfile("current.json");
+	game_board.makeJSONfile("test.json");
 }
 
 void testJSON() {

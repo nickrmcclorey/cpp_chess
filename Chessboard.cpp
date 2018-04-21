@@ -220,11 +220,12 @@ void Chessboard::makeJSONfile() const {
 
 
 bool Chessboard::isValidIndex(const int &x, const int &y) const {
-	if ((x > 7) || (x < 0) || (y > 7) || (y < 0))
+	if ((x > 7) || (x < 0) || (y > 7) || (y < 0)) {
 		return false;
-	else
+	}
+	else {
 		return true;
-	
+	}
 }
 
 // checks to see if a piece is vulnerable to being hit
@@ -519,13 +520,16 @@ void Chessboard::loadGame(string filename) {
     //on top self, on teammate, off board
 	bool Chessboard::isAllowedToMove(int location_x, int location_y, int destination_x, int destination_y) const{
         //TODO:: FINISH FUNCTION
-        if ((location_x == destination_x) && (location_y == destination_y)) {
+		
+        if (!isValidIndex(location_x, location_y) && !isValidIndex(destination_x, destination_y)) {
 			return false;
         }
-        else if(board[location_x][location_y].team() == board[destination_y][destination_x].team()){
+        else if(board[location_x][location_y].isTeam(board[destination_x][destination_y].team())){
+			cout << "moving on top of teammate" << endl;
+			//cout << board[destination_x][destination_y].team() << endl;
         	return false;
         }
-        else if(!isValidIndex(location_x, location_y) && !isValidIndex(destination_x, destination_y)){
+        else if((location_x == destination_x) && (location_y == destination_y)){
         	return false; 
         }
         else if (board[location_x][location_y].isKing()){
@@ -549,6 +553,7 @@ void Chessboard::loadGame(string filename) {
         	}
         }
         else if (board[location_x][location_y].isPawn()){
+			cout << "entering pawn" << endl;
         	if (canMovePawn(location_x, location_y, destination_x, destination_y)){
         		return true;
         	}
@@ -657,8 +662,9 @@ void Chessboard::loadGame(string filename) {
 	}
 	
 	bool Chessboard::canMovePawn(int location_x, int location_y, int destination_x, int destination_y) const{
-		if (board[location_x][location_y].team() == "black"){
-			if (destination_x = location_x+1 && (destination_y == location_y+1 || destination_y == location_y-1)){
+		if (board[location_x][location_y].isTeam("black")){
+			
+			if (destination_x == location_x+1 && (destination_y == location_y+1 || destination_y == location_y-1) && board[destination_x][destination_y].isTeam("white")){
 				return true;
 			}
 			else if(destination_x == location_x+1 && destination_y == location_y){
@@ -668,11 +674,13 @@ void Chessboard::loadGame(string filename) {
 				return true;
 			}
 			else{
+				cout << "found black piece but didn't think it was okay to move" << endl;
 				return false;
 			}
 		}
 		else if (board[location_x][location_y].team() == "white"){
-			if (destination_x = location_x-1 && (destination_y == location_y+1 || destination_y == location_y-1)){
+			cout << "failed to find black piece" << endl;
+			if (destination_x == location_x-1 && (destination_y == location_y+1 || destination_y == location_y-1)){
 				return true;
 			}
 			else if(destination_x == location_x-1 && destination_y == location_y){
@@ -685,6 +693,6 @@ void Chessboard::loadGame(string filename) {
 				return false;
 			}
 		}
-		
+		cout << "failed to find blakc or whtie piece" << endl;
 		return false;
 	}
