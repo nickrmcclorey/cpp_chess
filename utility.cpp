@@ -11,16 +11,16 @@
 using namespace std;
 
 
-int stoi(char numInChar) {
+int toInt(char numInChar) {
 	// create string
 	string toReturn;
 	// append the char
 	toReturn.push_back(numInChar);
-	// use other stoi function to convert string to int and return this
-	return stoi(toReturn);
+	// use other toInt function to convert string to int and return this
+	return toInt(toReturn);
 }
 
-int stoi(string &num_s) {
+int toInt(string num_s) {
 	istringstream raw(num_s); // create a stream with raw in it
 	int toReturn = 0; // declare the variable to return
 	raw >> toReturn; // put the string number into the int variable
@@ -87,7 +87,7 @@ vector<int> moveFromUserString(string raw) {
 		// if character is a valid number then...
 		if (refined.at(k) > '0' && refined.at(k) <= '8')
 			// put its numeric value in the return array
-			toReturn.at(1) = stoi(refined.at(k)) - 1;
+			toReturn.at(1) = toInt(refined.at(k)) - 1;
 		// if character is a letter
 		else if (refined.at(k) >= 'a' && refined.at(k) <= 'h')
 			toReturn.at(0) = refined.at(k) - 'a';
@@ -100,7 +100,7 @@ vector<int> moveFromUserString(string raw) {
 	for (int k = 2; k < 4; k++) {
 		
 		if (refined.at(k) > '0' && refined.at(k) <= '8')
-			toReturn.at(3) = stoi(refined.at(k)) - 1;
+			toReturn.at(3) = toInt(refined.at(k)) - 1;
 		else if (refined.at(k) >= 'a' && refined.at(k) <= 'h')
 			toReturn.at(2) = refined.at(k) - 'a';
 		else
@@ -209,5 +209,5 @@ int askInteger(string prompt) {
 
 	} while (!isInt(userInput));
 
-	return stoi(userInput);
+	return toInt(userInput);
 }

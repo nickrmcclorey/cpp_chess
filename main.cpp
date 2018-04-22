@@ -301,7 +301,8 @@ vector<int> getMoveVec(Chessboard game) {
 				bool toQuit = inGameMenu(game);
 				if (toQuit) {
 					// return empty vector to signify we want to go to main menu
-					return {};
+					vector<int> empty;
+					return empty;
 				}
 			} else {
 				// this happens when user enteres nonsense
@@ -442,7 +443,7 @@ void mainMenu() {
 
 			// get input
 			getline(cin, userChoice);
-			option = stoi(userChoice);
+			option = toInt(userChoice);
 
 			// do what the user wants
 			if (option > 4 || option < 0) {
@@ -471,7 +472,7 @@ void mainMenu() {
 
 			// get input
 			getline(cin, userChoice);
-			option = stoi(userChoice);
+			option = toInt(userChoice);
 
 			// turn AI on or off
 			if (option > 2 || option < 0) {

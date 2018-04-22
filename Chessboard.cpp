@@ -380,7 +380,7 @@ bool Chessboard::isExposed(int xPos, int yPos, string friendly) {
 }
  
 vector<int> Chessboard::findDiagonal(int xPos, int yPos, int xDir, int yDir) const {
-	ChessPiece toReturn;
+	
 	int yAdjustor = yDir;
 	int xAdjustor = xDir;
 	while ((this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) && (board[xPos + xAdjustor][yPos + yAdjustor].isEmpty())) {
@@ -388,7 +388,10 @@ vector<int> Chessboard::findDiagonal(int xPos, int yPos, int xDir, int yDir) con
 		yAdjustor = (abs(yAdjustor) + 1) * yDir;
 	}
 
-	return { xPos + xAdjustor, yPos + yAdjustor };
+	vector<int> toReturn;
+	toReturn.push_back(xPos + xAdjustor);
+	toReturn.push_back(yPos + yAdjustor);
+	return toReturn;
 }
 
 
@@ -549,8 +552,8 @@ void Chessboard::loadGame(string filename) {
 		ChessPiece newPiece(valueFromKey("team", object), valueFromKey("type", object));
 		
 		// get the x and y positions of the piece
-		int xPos = stoi(valueFromKey("xPos",object));
-		int yPos = stoi(valueFromKey("yPos", object));
+		int xPos = toInt(valueFromKey("xPos",object));
+		int yPos = toInt(valueFromKey("yPos", object));
 
 		// put the piece on the board
 		board[xPos][yPos] = newPiece;
