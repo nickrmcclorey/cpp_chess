@@ -44,7 +44,7 @@ function updateBoard(board_info) {
     ypos++;
 
     // put it on the board
-    board.rows[9-ypos].cells[xpos].innerHTML = '<img src="chessPics/'+board_info.pieces[k].team+board_info.pieces[k].type+'.png"</img>';
+    board.rows[9-ypos].cells[xpos].innerHTML = '<img src="chessPics/'+board_info.pieces[k].team + '_' + board_info.pieces[k].type+'.png"</img>';
 
   }
 }
