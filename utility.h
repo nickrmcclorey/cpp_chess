@@ -2,8 +2,8 @@
 #define utility_h
 using namespace std;
 
-int stoi(char c);
-int stoi(string &num_s);
+int toInt(char c);
+int toInt(string num_s);
 int askInteger(string prompt);
 bool isInt(string input);
 vector<int> moveFromUserString(string raw);
