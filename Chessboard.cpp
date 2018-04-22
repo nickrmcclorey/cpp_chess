@@ -751,3 +751,34 @@ void Chessboard::loadGame(string filename) {
 		}
 		return false;
 	}
+	
+	void Chessboard::makeAMove(){
+        //break
+        bool b = false;
+        
+        for (int r1 = 0; r1 < 8; r1++){
+            for (int c1 = 0; c1 < 8; c1++){
+                for (int r2 = 0; r2 < 8; r2++){
+                    for (int c2 = 0; c2 < 8; c2++){
+                        if (this->isAllowedToMove(r1, c1, r2, c2)){
+                            this->move(r1, c1, r2, c2);
+                            b = true;
+                            break;
+                        }
+                        if (b){
+                            break;
+                        }    
+                    }
+                    if (b){
+                        break;
+                    }
+                }
+                if (b){
+                    break;
+                }
+            }
+            if (b){
+                break;
+            }
+        }
+    }

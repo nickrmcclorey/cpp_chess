@@ -64,7 +64,8 @@ public:
 	void newGame();
 	void makeJSONfile(string) const;
 	void makeJSONfile() const;
-
+	
+	void makeAMove();
 
 };
 
