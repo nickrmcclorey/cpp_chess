@@ -173,7 +173,7 @@ void Chessboard::makeJSONfile(string filename) const {
 		filename.append(".json");
 
 	// putting it in the saved games folder
-	string path = "saved_games\\" + filename;
+	string path = "./saved_games/" + filename;
 
 	// open the file with the path
 	outfile.open(path.c_str());
@@ -256,126 +256,6 @@ bool Chessboard::isExposed(int xPos, int yPos, string friendly) {
 	}
 	//cout << "returning false after looking at " << count << " different moves" << endl;
 	return false;
-	//if (this->at(xPos, yPos).isEmpty()) {
-	//	return false;
-	//}
-
-	////ChessPiece candidate = this->at(xPos, yPos);
-	//string enemy = (!strcmp(friendly.c_str(), "black")) ? "white" : "black";
-	//
-	//// looking for nearby kings and pawns
-	//for (int row = -1; row <= 1 ; row++) {
-	//	for (int col = -1; col <= 1; col++) {
-	//		if (!isValidIndex(xPos + row, yPos + col))
-	//			continue;
-
-	//		ChessPiece temp = this->at(xPos + row, yPos + col);	
-	//		if ((temp.isKing()) && temp.isTeam(enemy))
-	//			return true;
-	//	}
-	//}
-	//
-
-	//// looking for knights
-	//if (this->isValidIndex(xPos + 1, yPos + 2) && this->at(xPos + 1, yPos + 2).isKnight()) {
-	//	return true;
-	//} else if (this->isValidIndex(xPos - 1, yPos + 2) && this->at(xPos - 1, yPos + 2).isKnight()) {
-	//	return true;
-	//} else if (this->isValidIndex(xPos + 1, yPos - 2 ) && this->at(xPos + 1, yPos - 2).isKnight()) {
-	//	return true;
-	//} else if (this->isValidIndex(xPos - 1, yPos - 2) && this->at(xPos - 1, yPos - 2).isKnight()) {
-	//	return true;
-	//} else if (this->isValidIndex(xPos + 2, yPos + 1) && this->at(xPos + 2, yPos + 1).isKnight()) {
-	//	return true;
-	//} else if (this->isValidIndex(xPos - 2, yPos + 1) && this->at(xPos - 2, yPos + 1).isKnight()) {
-	//	return true;
-	//} else if (this->isValidIndex(xPos + 2, yPos - 1) && this->at(xPos + 2, yPos - 1).isKnight()) {
-	//	return true;
-	//} else if (this->isValidIndex(xPos - 2, yPos - 1) && this->at(xPos - 2, yPos - 1).isKnight()) {
-	//	return true;
-	//}
-
-	////return false; // rest of function isn't finished
-	////TODO: finish logic below
-
-	//// === looking for rooks === \\
-
-	//// going horizontal
-	//int adjustor = 1;
-	//// while valid index and haven't run into teammate
-	//while ((this->isValidIndex(xPos + adjustor, yPos)) && (board[xPos + adjustor][yPos].isEmpty())) {
-	//	adjustor++;
-	//}
-	//// found invalid index or next piece in path. if this piece is a rook or queen
-	//if (this->isValidIndex(xPos + adjustor, yPos)) {
-	//	ChessPiece attacker = board[xPos + adjustor][yPos];
-	//	if ((attacker.isTeam(enemy)) && (attacker.isQueen() || attacker.isRook()))
-	//		return true;
-	//}
-
-
-
-	//adjustor = -1;
-	//// while valid index and haven't run into teammate
-	//while ((this->isValidIndex(xPos + adjustor, yPos)) && (board[xPos + adjustor][yPos].isEmpty())) {
-	//	adjustor--;
-	//}
-	//if (this->isValidIndex(xPos + adjustor, yPos)) {
-	//	ChessPiece attacker = board[xPos + adjustor][yPos];
-	//	if ((attacker.isTeam(enemy)) && (attacker.isQueen() || attacker.isRook()))
-	//		return true;
-	//}
- //   
-
-	//// adjusting y position
-	//adjustor = 1;
-	//while ((this->isValidIndex(xPos, yPos + adjustor)) && (board[xPos][yPos + adjustor].isEmpty())) {
-	//	adjustor++;
-	//}
-	//if (this->isValidIndex(xPos, yPos + adjustor)) {
-	//	ChessPiece attacker = board[xPos][yPos + adjustor];
-	//	if ((attacker.isTeam(enemy)) && (attacker.isQueen() || attacker.isRook()))
-	//		return true;
-	//}
-
-
-
-	//adjustor = -1;
-	//while ((this->isValidIndex(xPos, yPos + adjustor)) && (board[xPos][yPos + adjustor].isEmpty())) {
-	//	adjustor--;
-	//}
-	//if (this->isValidIndex(xPos, yPos + adjustor)) {
-	//	ChessPiece attacker = board[xPos][yPos + adjustor];
-	//	if ((attacker.isTeam(enemy)) && (attacker.isQueen() || attacker.isRook()))
-	//		return true;
-	//}
-
-	//
-	//// === looking for bishops === \\
-	//
-
-	//// get all the pieces looking in the diagonal direction
-	//vector <ChessPiece> attackers;
-	//vector<int> attackerPosition = this->findDiagonal(xPos, yPos, 1, 1);
-	//attackers.push_back( this->at(attackerPosition.at(0), attackerPosition.at(1)));
-	//attackerPosition = this->findDiagonal(xPos, yPos, -1, 1);
-	//attackers.push_back(this->at(attackerPosition.at(0), attackerPosition.at(1)));
-	//attackerPosition = this->findDiagonal(xPos, yPos, 1, -1);
-	//attackers.push_back(this->at(attackerPosition.at(0), attackerPosition.at(1)));
-	//attackerPosition = this->findDiagonal(xPos, yPos, -1, -1);
-	//attackers.push_back(this->at(attackerPosition.at(0), attackerPosition.at(1)));
-	//
-	//// checking to see if any of the visable diagonal pieces are enemy bishops or queens
-	//for (int k = 0; k < attackers.size(); k++) {
-	//	ChessPiece attacker = attackers.at(k);
-	//	if ((attacker.isTeam(enemy)) && (attacker.isBishop() || attacker.isQueen()))
-	//		return true;
-	//}
-
-
-	//// queen was checked when we were looking for rooks and queens
-	//// no enemy pieces can move to the spot our piece is in so return false
-	//return false;
 
 }
  
@@ -417,6 +297,9 @@ bool Chessboard::check(string teamToEscape) {
 // so if turn is white then it checks if white king is in check mate
 bool Chessboard::checkmate(string teamToEscape) {
 
+	if (lastCaptured.isKing())
+		return true;
+
 	// holds positions of king
 	int kingX = -1, kingY = -1;
 
@@ -447,6 +330,8 @@ bool Chessboard::checkmate(string teamToEscape) {
 	
 	tempBoard->makeJSONfile();
 
+
+	bool kingExposed;
 	// checks all adjacent spots to see if he can move there and be safe
 	for (int row = -1; row <= 1; row++) {
 		for (int col = -1; col <= 1; col++) {
@@ -454,8 +339,29 @@ bool Chessboard::checkmate(string teamToEscape) {
 			// if he can move to that spot and isn't exposed on that spot, return false
 			if (tempBoard->isAllowedToMove(kingX, kingY, kingX+col, kingY+row) ) {
 				tempBoard->move(kingX, kingY, kingX + col, kingY + row);
-				if (!tempBoard->isExposed(kingX + col, kingY + row, teamToEscape)) 
-				return false;
+
+				string enemy = (!strcmp(king.team().c_str(), "black")) ? "white" : "black";
+				//cout << "inside isExposed with enemy being " << enemy << endl;
+				//cout << "origin is " << xPos << "," << yPos << endl;
+
+				int count = 0;
+				for (int col = 0; col < 8; col++) {
+					for (int row = 0; row < 8; row++) {
+						count++;
+						//cout << "col,row = " << col << "," << row << endl;
+						if (this->at(col, row).isTeam(enemy) && this->isAllowedToMove(col, row, kingX, kingY) && this->isExposed(col,row,enemy)) {
+							//cout << this->at(col,row).type() << " at " << col << "," << row << " can move to " << xPos << "," << yPos << endl;
+							kingExposed = true;
+						}
+					}
+				}
+				//cout << "returning false after looking at " << count << " different moves" << endl;
+				kingExposed = false;
+
+				if (!kingExposed)
+					return false;
+				else
+					return true;
 			}
 		}
 	}
@@ -512,7 +418,7 @@ void Chessboard::loadGame(string filename) {
 	// JSON file with board info in it
 	ifstream infile;
 	// prepend the saved_games folder to the filename to get the path
-	string path = "saved_games\\" + filename;
+	string path = "./saved_games/" + filename;
 	infile.open(path.c_str());
 
 	//check to make sure it opens correctly;
@@ -684,7 +590,7 @@ void Chessboard::loadGame(string filename) {
 				}
 			}
 			//Second quadrant
-			else if(destination_x<location_y && destination_y>location_y){
+			else if(destination_x<location_x && destination_y>location_y){
 				if (findDiagonal(location_x, location_y, -1, 1)[0]<=destination_x && findDiagonal(location_x, location_y, -1, 1)[1]>=destination_y){
 					return true;
 				}
@@ -697,7 +603,7 @@ void Chessboard::loadGame(string filename) {
 			}
 			//Fourth quadrant
 			else if(destination_x>location_x && destination_y<location_y){
-				if (findDiagonal(location_x, location_y, 1, -1)[0]>=destination_x && findDiagonal(location_x, location_y, -1, 1)[1]<=destination_y){
+				if (findDiagonal(location_x, location_y, 1, -1)[0]>=destination_x && findDiagonal(location_x, location_y, 1, -1)[1]<=destination_y){
 					return true;
 				}
 			}	

@@ -383,6 +383,7 @@ void deleteGame() {
 	if (indexToDelete == -1)
 		return;
 
+	gameToDelete = gameNames.at(indexToDelete);
 	gameNames.erase(gameNames.begin() + indexToDelete, gameNames.begin() + indexToDelete + 1);
 	/*gameToDelete = gameNames.at(indexToDelete);
 	for (int k = indexToDelete; k < gameNames.size() - 1; k++) {
@@ -398,7 +399,7 @@ void deleteGame() {
 
 
 	ofstream outfile;
-	outfile.open("saved_games\\game_names.txt");
+	outfile.open("saved_games/game_names.txt");
 
 	if (!outfile.is_open()) {
 		cout << "failed to write to game names" << endl;
@@ -414,7 +415,7 @@ void deleteGame() {
 	}
 
 	// path of file to delete
-	string fileToDelete = "saved_games\\" + gameToDelete;
+	string fileToDelete = "saved_games/" + gameToDelete;
 	// this removes the JSON file from the harddrive
 	if (remove(fileToDelete.c_str()))
 		cout << "file removed" << endl;
