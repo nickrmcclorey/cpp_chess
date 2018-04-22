@@ -141,6 +141,11 @@ vector<string> getGameNames() {
 		getline(infile, wholeLine);
 		// ... put it in the gameNames vector
 		gameNames.push_back(wholeLine);
+
+		// makes sure line actually has string in it
+		if (gameNames.back().size() == 0) {
+			gameNames.pop_back();
+		}
 	}
 	infile.close();
 	return gameNames;
@@ -169,7 +174,7 @@ void appendToGameNames(string toAppend) {
 	}
 
 	for (int k = 0; k < gameNames.size()-1; k++) {
-		outfile << gameNames.at(k) << endl;
+		outfile << endl << gameNames.at(k);
 	}
 	outfile << gameNames.back();
 

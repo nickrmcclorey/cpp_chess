@@ -167,15 +167,14 @@ void testisExposed() {
 	cout << "blackpawn = " << x.at(1, 1).team() << x.at(1, 1).type() << endl;
 	x.makeJSONfile("current.json");*/
 }
-Chessboard importGame();
+
 void testFileIO() {
 	Chessboard original;
 	original.move(0, 0, 3, 5);
 	original.makeJSONfile("testImportExport.json");
 	original.makeJSONfile("current");
 
-	Chessboard importedBoard;
-	importedBoard = importGame();
+	Chessboard importedBoard("testImportExport.json");
 	cout << original.at(3, 5).team() << original.at(3, 5).type() << " = " << importedBoard.at(3, 5).team() << importedBoard.at(3, 5).type() << endl;
 
 }
@@ -194,9 +193,9 @@ Chessboard importGame() {
 			cout << "[" << k + 2 << "] " << gameNames.at(k) << endl;
 		}
 		
-		gameIndex = askInteger("");
+		gameIndex = askInteger("Enter a number\n");
 		
-		if (gameIndex = 1) {
+		if (gameIndex == 1) {
 			Chessboard newGame;
 			return newGame;
 		}
@@ -210,6 +209,7 @@ Chessboard importGame() {
 	
 	// use Chessboard constructor to create board with data from json file
 	Chessboard importedGame(gameNames.at(gameIndex-2));
+	cout << "Importing " << gameNames.at(gameIndex - 2) << endl;
 	// return game with loaded data
 	return importedGame;
 
@@ -368,6 +368,7 @@ void playChess(Chessboard game) {
 
 void deleteGame() {
 	vector<string> gameNames = getGameNames();
+	string gameToDelete;
 
 	cout << "What game do you want to delete" << endl;
 	cout << "[1] Return to Menu" << endl;
@@ -375,33 +376,45 @@ void deleteGame() {
 		cout << "[" << k+2 << "] " <<  gameNames.at(k) << endl;
 	}
 
+	// subtracting 2 is to adjust for the number given to the user
 	int indexToDelete = askInteger("Enter a number\n") - 2;
 
 	if (indexToDelete == -1)
 		return;
 
-	//for (int k = indexToDelete; k < gameNames.size()-1; k++) {
-	//	gameNames.at(k) = gameNames.at(k + 1);
-	//}
-	//gameNames.pop_back();
-	string gameToDelete = gameNames.at(indexToDelete);
 	gameNames.erase(gameNames.begin() + indexToDelete, gameNames.begin() + indexToDelete + 1);
+	/*gameToDelete = gameNames.at(indexToDelete);
+	for (int k = indexToDelete; k < gameNames.size() - 1; k++) {
+		cout << "inside loop" << endl;
+		gameNames.at(k) = gameNames.at(k + 1);
+	}
+	if (gameNames.size() > 0) {
+		gameNames.pop_back();
+		cout << "popped back with no problem" << endl;
+	}*/
+		//
+	//}
+
 
 	ofstream outfile;
 	outfile.open("saved_games\\game_names.txt");
 
 	if (!outfile.is_open()) {
 		cout << "failed to write to game names" << endl;
+		outfile.close();
 		return;
 	}
 		
-	
-	outfile << gameNames.at(0);
+	// strange file output is to prevent whitespace at the end of the file which could mess things up later
+	if (gameNames.size() > 0)
+		outfile << gameNames.at(0);
 	for (int k = 1; k < gameNames.size(); k++) {
 		outfile << endl << gameNames.at(k);
 	}
 
+	// path of file to delete
 	string fileToDelete = "saved_games\\" + gameToDelete;
+	// this removes the JSON file from the harddrive
 	if (remove(fileToDelete.c_str()))
 		cout << "file removed" << endl;
 	
@@ -488,7 +501,8 @@ void mainMenu() {
 int main() {
 	// Sam Oaks
 	// Nick McClorey 
-
+	//testFileIO();
+	
 	mainMenu();
 	//testCheckmate();
 	//appendToGameNames("test");

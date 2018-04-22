@@ -503,7 +503,10 @@ string valueFromKey(string key, string raw) {
 
 void Chessboard::loadGame(string filename) {
 	
-	// input file
+	if (filename.find(".json") == string::npos)
+		filename.append(".json");
+
+	// JSON file with board info in it
 	ifstream infile;
 	// prepend the saved_games folder to the filename to get the path
 	string path = "saved_games\\" + filename;
