@@ -2,6 +2,7 @@
 // Nick McClorey 
 
 #include <iostream>
+#include <stdio.h>
 #include <cstdlib>
 #include "ChessPiece.h"
 #include "Chessboard.h"
@@ -261,8 +262,7 @@ bool inGameMenu(const Chessboard &game) {
 					cout << "Are you sure?" << endl;
 					int option = askInteger("[1] yes\n[2] no\n");
 					if (option == 2) {
-						// by going to the top of the loop, the user will be prompted again
-						continue;
+						return false;
 					}
 				}
 
@@ -366,6 +366,49 @@ void playChess(Chessboard game) {
 
 }
 
+void deleteGame() {
+	vector<string> gameNames = getGameNames();
+
+	cout << "What game do you want to delete" << endl;
+	cout << "[1] Return to Menu" << endl;
+	for (int k = 0; k < gameNames.size(); k++) {
+		cout << "[" << k+2 << "] " <<  gameNames.at(k) << endl;
+	}
+
+	int indexToDelete = askInteger("Enter a number\n") - 2;
+
+	if (indexToDelete == -1)
+		return;
+
+	//for (int k = indexToDelete; k < gameNames.size()-1; k++) {
+	//	gameNames.at(k) = gameNames.at(k + 1);
+	//}
+	//gameNames.pop_back();
+	string gameToDelete = gameNames.at(indexToDelete);
+	gameNames.erase(gameNames.begin() + indexToDelete, gameNames.begin() + indexToDelete + 1);
+
+	ofstream outfile;
+	outfile.open("saved_games\\game_names.txt");
+
+	if (!outfile.is_open()) {
+		cout << "failed to write to game names" << endl;
+		return;
+	}
+		
+	
+	outfile << gameNames.at(0);
+	for (int k = 1; k < gameNames.size(); k++) {
+		outfile << endl << gameNames.at(k);
+	}
+
+	string fileToDelete = "saved_games\\" + gameToDelete;
+	if (remove(fileToDelete.c_str()))
+		cout << "file removed" << endl;
+	
+	outfile.close();
+}
+
+
 // main menu used to set up game
 void mainMenu() {
 	while (true) {
@@ -376,30 +419,31 @@ void mainMenu() {
 		cout << endl << "Chess" << endl << endl;
 
 		// ask whether user want to start new game or load a saved game
-		while (option > 3 || option <= 0) {
+		while (option > 4 || option <= 0) {
 
 			// show options
 			cout << "[1] New Game" << endl;
 			cout << "[2] Load Existing Game" << endl;
-			cout << "[3] Exit" << endl;
+			cout << "[3] Delete saved game" << endl;
+			cout << "[4] Exit" << endl;
 
 			// get input
 			getline(cin, userChoice);
 			option = stoi(userChoice);
 
 			// do what the user wants
-			if (option > 3 || option < 0) {
+			if (option > 4 || option < 0) {
 				cout << "invalid option" << endl;
 				continue;
-			}
-			else if (option == 1) {
+			} else if (option == 1) {
 				game.newGame();
-			}
-			else if (option == 2) {
+			} else if (option == 2) {
 				game = importGame();
-
-			}
-			else if (option == 3) {
+			} else if (option == 3) {
+				deleteGame();
+				option = 0;
+				continue;
+			} else if (option == 4) {
 				return; // return to int main()
 			}
 		}

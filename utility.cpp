@@ -152,6 +152,12 @@ void appendToGameNames(string toAppend) {
 		toAppend.append(".json");
 
 	vector<string> gameNames = getGameNames();
+	
+	for (int k = 0; k < gameNames.size(); k++) {
+		if (!strcmp(gameNames.at(k).c_str(), toAppend.c_str()))
+			return;
+	}
+
 	gameNames.push_back(toAppend);
 	
 	ofstream outfile;
