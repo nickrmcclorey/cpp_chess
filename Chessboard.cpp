@@ -173,7 +173,7 @@ void Chessboard::makeJSONfile(string filename) const {
 		filename.append(".json");
 
 	// putting it in the saved games folder
-	string path = "saved_games/" + filename;
+	string path = "./saved_games/" + filename;
 
 	// open the file with the path
 	outfile.open(path.c_str());
@@ -418,7 +418,7 @@ void Chessboard::loadGame(string filename) {
 	// JSON file with board info in it
 	ifstream infile;
 	// prepend the saved_games folder to the filename to get the path
-	string path = "saved_games/" + filename;
+	string path = "./saved_games/" + filename;
 	infile.open(path.c_str());
 
 	//check to make sure it opens correctly;
