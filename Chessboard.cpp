@@ -496,7 +496,6 @@ void Chessboard::loadGame(string filename) {
     
     //on top self, on teammate, off board
 	bool Chessboard::isAllowedToMove(int location_x, int location_y, int destination_x, int destination_y) const{
-        //TODO:: FINISH FUNCTION
 		
         if (!isValidIndex(location_x, location_y) || !isValidIndex(destination_x, destination_y)) {
 			//cout << "invalid index" << endl;
@@ -681,7 +680,7 @@ void Chessboard::loadGame(string filename) {
             for (int c1 = 0; c1 < 8; c1++){
                 for (int r2 = 0; r2 < 8; r2++){
                     for (int c2 = 0; c2 < 8; c2++){
-                        if (this->isAllowedToMove(r1, c1, r2, c2)){
+                        if (this->at(r1,c1).isTeam(this->getTurn()) && this->isAllowedToMove(r1, c1, r2, c2)){
                             this->move(r1, c1, r2, c2);
                             b = true;
                             break;

@@ -344,17 +344,23 @@ void playChess(Chessboard game) {
 
 	do {
 
-		// this function will also make sure user enters in a move thats follows the rules of chess
-		vector<int> moveVec = getMoveVec(game);
 
-		// if getMoveVec returns an empty array, it means
-		// user wants to return to main menu
-		if (moveVec.size() == 0)
-			return;
+		if (game.AI_is_playing() && game.getTurn().at(0) == game.get_AI_team().at(0)) {
+			cout << "A.I. is making a move" << endl;
+			game.makeAMove();
+		}
+		else {
+			// this function will also make sure user enters in a move thats follows the rules of chess
+			vector<int> moveVec = getMoveVec(game);
 
-		//cout << "moving piece from " << moveVec.at(0) << "," << moveVec.at(1) << " to " << moveVec.at(2) << "," << moveVec.at(3) << endl;
-		game.move(moveVec);
+			// if getMoveVec returns an empty array, it means
+			// user wants to return to main menu
+			if (moveVec.size() == 0)
+				return;
 
+			//cout << "moving piece from " << moveVec.at(0) << "," << moveVec.at(1) << " to " << moveVec.at(2) << "," << moveVec.at(3) << endl;
+			game.move(moveVec);
+		}
 		// switch the turn
 		game.changeTurn();
 
@@ -385,17 +391,7 @@ void deleteGame() {
 
 	gameToDelete = gameNames.at(indexToDelete);
 	gameNames.erase(gameNames.begin() + indexToDelete, gameNames.begin() + indexToDelete + 1);
-	/*gameToDelete = gameNames.at(indexToDelete);
-	for (int k = indexToDelete; k < gameNames.size() - 1; k++) {
-		cout << "inside loop" << endl;
-		gameNames.at(k) = gameNames.at(k + 1);
-	}
-	if (gameNames.size() > 0) {
-		gameNames.pop_back();
-		cout << "popped back with no problem" << endl;
-	}*/
-		//
-	//}
+	
 
 
 	ofstream outfile;
@@ -496,8 +492,10 @@ void mainMenu() {
 					cout << "What team are you on?" << endl;
 					getline(cin, userChoice);
 				}
-
-				game.set_AI_team(userChoice);
+				
+				// cammel case would look bad with this variable
+				string AI_team = (userChoice == "white") ? "black" : "white";
+				game.set_AI_team(AI_team);
 							
 			}
 		}
