@@ -498,6 +498,7 @@ void mainMenu() {
 				}
 
 				game.set_AI_team(userChoice);
+							
 			}
 		}
 
