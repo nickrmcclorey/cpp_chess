@@ -16,10 +16,10 @@ private:
 	string turn;
 	bool AI_playing;
 	string AI_team;
-	
+	ChessPiece lastCaptured;	
 
 public:
-	ChessPiece lastCaptured;
+
 
 	// constructor
 	Chessboard();

@@ -4,12 +4,12 @@
 #include <iostream>
 #include <stdio.h>
 #include <cstdlib>
-#include "ChessPiece.h"
-#include "Chessboard.h"
-#include "utility.h"
 #include <cstring>
 #include <fstream>
 
+#include "ChessPiece.h"
+#include "Chessboard.h"
+#include "utility.h"
 
 using namespace std;
 

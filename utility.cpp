@@ -12,17 +12,17 @@ using namespace std;
 
 
 int toInt(char numInChar) {
-	// create string
+
+	// convert char to string
 	string toReturn;
-	// append the char
 	toReturn.push_back(numInChar);
 	// use other toInt function to convert string to int and return this
 	return toInt(toReturn);
 }
 
 int toInt(string num_s) {
-	istringstream raw(num_s); // create a stream with raw in it
-	int toReturn = 0; // declare the variable to return
+	istringstream raw(num_s); // create a stream with number in it
+	int toReturn = 0; 
 	raw >> toReturn; // put the string number into the int variable
 	return toReturn; // return int
 }
@@ -40,9 +40,6 @@ string removeSpaces(string copy) {
 
 		if ((copy.at(0) == 32) && (copy.length() == 1)) { // 32 is asc code for space
 			return "";
-			copy.erase(0, 1);
-
-			k = 0;
 		}
 
 	}
@@ -119,6 +116,8 @@ vector<int> moveFromUserString(string raw) {
 
 }
 
+// goes to the file saved_games/game_names.txt and gets the 
+//names of the json files containing the saved games
 vector<string> getGameNames() {
 	//cout << "Entered getGameNames" << endl;
 	// contains names of all the saved games
@@ -151,13 +150,17 @@ vector<string> getGameNames() {
 	return gameNames;
 }
 
+// this is used when the user saves a game. A json file is 
+// created and the name of this file is stored in game_names.txt
 void appendToGameNames(string toAppend) {
 
+	// make sure file has .json extension
 	if (toAppend.find(".json") == string::npos)
 		toAppend.append(".json");
 
 	vector<string> gameNames = getGameNames();
 	
+	// make sure name isn't already in game_names.txt
 	for (int k = 0; k < gameNames.size(); k++) {
 		if (!strcmp(gameNames.at(k).c_str(), toAppend.c_str()))
 			return;
@@ -174,8 +177,9 @@ void appendToGameNames(string toAppend) {
 	}
 
 	for (int k = 0; k < gameNames.size()-1; k++) {
-		outfile << endl << gameNames.at(k);
+		outfile << gameNames.at(k) << endl;
 	}
+	// this is outside for loop so there isn't white space at the end of the file
 	outfile << gameNames.back();
 
 }
@@ -190,7 +194,8 @@ bool isInt(string input) {
 	return true;
 }
 
-
+// used to prevent program from freaking out when user enters 
+// string when program wants integer
 int askInteger(string prompt) {
 	string userInput;
 
@@ -203,7 +208,7 @@ int askInteger(string prompt) {
 
 		userInput = removeSpaces(userInput);
 		if (!isInt(userInput))
-			cout << "response wasn't understood" << endl;
+			cout << "response wasn't understood. Enter a number" << endl;
 		else
 			break;
 

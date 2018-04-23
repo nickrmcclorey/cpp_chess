@@ -109,7 +109,7 @@ vector<ChessPiece> Chessboard::allPieces() const {
 	return toReturn;
 }
 
-// returns the which players turn it is
+// basic getters
 string Chessboard::getTurn() const {
 	return turn;
 }
@@ -129,18 +129,23 @@ void Chessboard::turn_AI_off() {
 string Chessboard::get_AI_team() const {
 	return this->AI_team;
 }
+
 void Chessboard::set_AI_team(string team) {
 	this->AI_team = team;
 }
 
-// changes the turn
 void Chessboard::changeTurn() {
 	turn = (!strcmp("white", turn.c_str())) ? "black" : "white";
 }
 
 
 void Chessboard::setAt(int x, int y, ChessPiece toPlace) {
-	board[x][y] = toPlace;
+	if (this->isValidIndex(x, y)) {
+		board[x][y] = toPlace;
+	} else {
+		cout << "Program attempted to place a piece out of bounds" << endl;
+		exit(0);
+	}
 }
 
 void Chessboard::move(int fromX, int fromY, int toX, int toY){
@@ -163,6 +168,7 @@ void Chessboard::move(vector<int> moveSet) {
 	this->move(moveSet.at(0), moveSet.at(1), moveSet.at(2), moveSet.at(3));
 }
 
+// this is used to save games and to update board
 void Chessboard::makeJSONfile(string filename) const {
 	
 	// file to store json text in
@@ -222,6 +228,7 @@ void Chessboard::makeJSONfile(string filename) const {
 
 }
 
+// updates game board
 void Chessboard::makeJSONfile() const {
 	this->makeJSONfile("current.json");
 }
@@ -236,7 +243,7 @@ bool Chessboard::isValidIndex(const int &x, const int &y) const {
 	}
 }
 
-// checks to see if a piece is vulnerable to being hit
+// checks to see if a piece is vulnerable to being hit from the team other than the parameter friendly
 bool Chessboard::isExposed(int xPos, int yPos, string friendly) {
 	
 	string enemy = (!strcmp(friendly.c_str(), "black")) ? "white" : "black";
@@ -244,6 +251,7 @@ bool Chessboard::isExposed(int xPos, int yPos, string friendly) {
 	//cout << "origin is " << xPos << "," << yPos << endl;
 
 	int count = 0;
+	// cycle through all spots on board and see if they can move to the spot in question
 	for (int col = 0; col < 8; col++) {
 		for (int row = 0; row < 8; row++) {
 			count++;
@@ -259,15 +267,22 @@ bool Chessboard::isExposed(int xPos, int yPos, string friendly) {
 
 }
  
+/* though this function says findDiagonal it can also be used to find piece straight ahead
+   and to the sides. This is needed when we're trying to figure out fi a piece is trying to move
+   through another chess piece which isn't allowed. It starts at xPos,yPos and traveles in a direction
+   that is determined by xDir and yDir 1 means up or to the right, -1 means down or to the left and 0 means keep that value constant*/
 vector<int> Chessboard::findDiagonal(int xPos, int yPos, int xDir, int yDir) const {
 	
+	// used to adjust the index
 	int yAdjustor = yDir;
 	int xAdjustor = xDir;
+	// finding the first index in a certain direction from the origin that isn't empty
 	while ((this->isValidIndex(xPos + xAdjustor, yPos + yAdjustor)) && (board[xPos + xAdjustor][yPos + yAdjustor].isEmpty())) {
 		xAdjustor = (abs(xAdjustor) + 1) * xDir; 
 		yAdjustor = (abs(yAdjustor) + 1) * yDir;
 	}
 
+	// vector holds the x position and y position of the first non empty spot
 	vector<int> toReturn;
 	toReturn.push_back(xPos + xAdjustor);
 	toReturn.push_back(yPos + yAdjustor);
