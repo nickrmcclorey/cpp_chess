@@ -1,1 +1,1 @@
-g++ -std=c++11 main.cpp Chessboard.cpp ChessPiece.cpp utility.cpp
+g++ main.cpp Chessboard.cpp ChessPiece.cpp utility.cpp
