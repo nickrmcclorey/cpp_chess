@@ -463,7 +463,7 @@ void mainMenu() {
 			}
 		}
 
-		option = 1;
+		option = 3;
 		// ask whether user wants to play with ai or two player
 		while (option > 2 || option < 0) {
 
@@ -478,15 +478,20 @@ void mainMenu() {
 			// turn AI on or off
 			if (option > 2 || option < 0) {
 				cout << "That's an invalid option" << endl;
+				continue;
 			}
 			else if (option == 1) {
 				game.turn_AI_off();
 			}
 			else if (option == 2) {
+				
 				game.turn_AI_on();
+
 				cout << "What team are you on?" << endl;
 				getline(cin, userChoice);
-				while (!strcmp(userChoice.c_str(), "white") || !strcmp(userChoice.c_str(), "black")) {
+				
+				// user must pick a white or black
+				while (strcmp(userChoice.c_str(), "white") && strcmp(userChoice.c_str(), "black")) {
 					cout << "That's not a team" << endl;
 					cout << "What team are you on?" << endl;
 					getline(cin, userChoice);
