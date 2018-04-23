@@ -345,7 +345,7 @@ void playChess(Chessboard game) {
 	do {
 
 
-		if (game.AI_is_playing() && game.getTurn().at(0) == game.get_AI_team().at(0)) {
+		if (game.AI_is_playing() && game.getTurn() == game.get_AI_team()) {
 			cout << "A.I. is making a move" << endl;
 			game.makeAMove();
 		}
