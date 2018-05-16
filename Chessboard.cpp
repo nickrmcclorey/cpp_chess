@@ -135,7 +135,7 @@ void Chessboard::set_AI_team(string team) {
 }
 
 void Chessboard::changeTurn() {
-	turn = (!strcmp("white", turn.c_str())) ? "black" : "white";
+	turn = ("white" == turn) ? "black" : "white";
 }
 
 
@@ -246,7 +246,7 @@ bool Chessboard::isValidIndex(const int &x, const int &y) const {
 // checks to see if a piece is vulnerable to being hit from the team other than the parameter friendly
 bool Chessboard::isExposed(int xPos, int yPos, string friendly) {
 	
-	string enemy = (!strcmp(friendly.c_str(), "black")) ? "white" : "black";
+	string enemy = (friendly == "black") ? "white" : "black";
 	//cout << "inside isExposed with enemy being " << enemy << endl;
 	//cout << "origin is " << xPos << "," << yPos << endl;
 
@@ -355,7 +355,7 @@ bool Chessboard::checkmate(string teamToEscape) {
 			if (tempBoard->isAllowedToMove(kingX, kingY, kingX+col, kingY+row) ) {
 				tempBoard->move(kingX, kingY, kingX + col, kingY + row);
 
-				string enemy = (!strcmp(king.team().c_str(), "black")) ? "white" : "black";
+				string enemy = (king.team() == "black") ? "white" : "black";
 				//cout << "inside isExposed with enemy being " << enemy << endl;
 				//cout << "origin is " << xPos << "," << yPos << endl;
 

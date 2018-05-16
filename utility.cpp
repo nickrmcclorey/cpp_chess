@@ -162,7 +162,7 @@ void appendToGameNames(string toAppend) {
 	
 	// make sure name isn't already in game_names.txt
 	for (int k = 0; k < gameNames.size(); k++) {
-		if (!strcmp(gameNames.at(k).c_str(), toAppend.c_str()))
+		if (gameNames.at(k) == toAppend)
 			return;
 	}
 

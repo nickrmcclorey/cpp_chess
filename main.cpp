@@ -294,7 +294,7 @@ vector<int> getMoveVec(Chessboard game) {
 		moveVec = moveFromUserString(userInput);
 		//cout << moveVec.at(0) << moveVec.at(1) << moveVec.at(2) << moveVec.at(3) << endl;
 		if (moveVec.at(0) == -1 || (!game.isAllowedToMove(moveVec.at(0), moveVec.at(1), moveVec.at(2), moveVec.at(3))) || !game.at(moveVec.at(0),moveVec.at(1)).isTeam(game.getTurn())) {
-			if (!strcmp("menu", userInput.c_str())) {
+			if ("menu" == userInput) {
 				
 				// goes to small menu. if it returns true it means user want to
 				// return to the main menu
@@ -487,7 +487,7 @@ void mainMenu() {
 				getline(cin, userChoice);
 				
 				// user must pick a white or black
-				while (strcmp(userChoice.c_str(), "white") && strcmp(userChoice.c_str(), "black")) {
+				while ((userChoice != "white") && (userChoice != "black")) {
 					cout << "That's not a team" << endl;
 					cout << "What team are you on?" << endl;
 					getline(cin, userChoice);
@@ -507,13 +507,15 @@ void mainMenu() {
 int main() {
 	// Sam Oaks
 	// Nick McClorey 
-	//testFileIO();
+	//mainMenu();
 	
-	mainMenu();
-	//testCheckmate();
-	//appendToGameNames("test");
-	//testPiece();
-	//testIsAllowedToMove();
+
+	/* === test functions to make sure functions are working properly === */
+	testFileIO();
+	testCheckmate();
+	appendToGameNames("test");
+	testPiece();
+	testIsAllowedToMove();
 
 	return 0;
 }

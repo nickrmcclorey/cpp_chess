@@ -72,56 +72,56 @@ string ChessPiece::JSON_text(int xPos, int yPos) const {
 
 bool ChessPiece::isEmpty() const{
 	
-	if (!strcmp(piece_type.c_str(), "empty") )
+	if (piece_type == "empty") 
 		return true;
 	else
 		return false;
 }
 
 bool ChessPiece::isKing() const {
-	if (!strcmp(piece_type.c_str(), "king"))
+	if (piece_type == "king")
 		return true;
 	else
 		return false;
 }
 
 bool ChessPiece::isQueen() const {
-	if (!strcmp(piece_type.c_str(), "queen"))
+	if (piece_type == "queen")
 		return true;
 	else
 		return false;
 }
 
 bool ChessPiece::isBishop() const {
-	if (!strcmp(piece_type.c_str(), "bishop"))
+	if (piece_type == "bishop")
 		return true;
 	else
 		return false;
 }
 
 bool ChessPiece::isKnight() const {
-	if (!strcmp(piece_type.c_str(), "knight"))
+	if (piece_type == "knight")
 		return true;
 	else
 		return false;
 }
 
 bool ChessPiece::isRook() const {
-	if (!strcmp(piece_type.c_str(), "rook"))
+	if (piece_type == "rook")
 		return true;
 	else
 		return false;
 }
 
 bool ChessPiece::isPawn() const {
-	if (!strcmp(piece_type.c_str(), "pawn"))
+	if (piece_type == "pawn")
 		return true;
 	else
 		return false;
 }
 
 bool ChessPiece::isTeam(string team1) const {
-	if (!strcmp(this->team().c_str(), team1.c_str()))
+	if (this->team() == team1)
 		return true;
 	else
 		return false;
