@@ -308,6 +308,7 @@ bool Chessboard::check(string teamToEscape) {
 		return false;
 }
 
+
 // check for checkmate on current board. Looks to see if current player has any options
 // so if turn is white then it checks if white king is in check mate
 bool Chessboard::checkmate(string teamToEscape) {
@@ -337,16 +338,27 @@ bool Chessboard::checkmate(string teamToEscape) {
 
 	//cout << "king is at " << kingX << "," << kingY << endl;
 	ChessPiece king = this->at(kingX, kingY);
+	string enemy = (king.team() == "white") ? "black" : "white";
 	// checks to see if he's exposed on current spot
-	if (!this->isExposed(kingX, kingY, king.team()))
+	bool kingExposedOnSpot = false;
+	for (int col = 0; col < 8; col++) {
+		for (int row = 0; row < 8; row++) {
+			if (this->at(col, row).team() == enemy && isAllowedToMove(col, row, kingX, kingY) && !isExposed(col, row, enemy)) {
+				kingExposedOnSpot = true;
+			}
+		}
+	}
+
+	if (!kingExposedOnSpot) {
 		return false;
-	
+	}
+
+
 	Chessboard* tempBoard = new Chessboard;
-	
 	tempBoard->makeJSONfile();
 
 
-	bool kingExposed;
+	bool kingExposed = false;
 	// checks all adjacent spots to see if he can move there and be safe
 	for (int row = -1; row <= 1; row++) {
 		for (int col = -1; col <= 1; col++) {
@@ -354,36 +366,20 @@ bool Chessboard::checkmate(string teamToEscape) {
 			// if he can move to that spot and isn't exposed on that spot, return false
 			if (tempBoard->isAllowedToMove(kingX, kingY, kingX+col, kingY+row) ) {
 				tempBoard->move(kingX, kingY, kingX + col, kingY + row);
-
-				string enemy = (king.team() == "black") ? "white" : "black";
-				//cout << "inside isExposed with enemy being " << enemy << endl;
-				//cout << "origin is " << xPos << "," << yPos << endl;
-
-				int count = 0;
-				for (int col = 0; col < 8; col++) {
-					for (int row = 0; row < 8; row++) {
-						count++;
-						//cout << "col,row = " << col << "," << row << endl;
-						if (this->at(col, row).isTeam(enemy) && this->isAllowedToMove(col, row, kingX, kingY) && this->isExposed(col,row,enemy)) {
-							//cout << this->at(col,row).type() << " at " << col << "," << row << " can move to " << xPos << "," << yPos << endl;
-							kingExposed = true;
-						}
-					}
-				}
-				//cout << "returning false after looking at " << count << " different moves" << endl;
-				kingExposed = false;
-
-				if (!kingExposed)
+				
+				if (!tempBoard->isExposed(kingX + col, kingY + row, king.team())) {
+					delete tempBoard;
 					return false;
-				else
-					return true;
+				}
+
 			}
 		}
 	}
-
+	
 	delete tempBoard;
-	// king has no more options return true
+	
 	return true;
+	
 }
 
 
